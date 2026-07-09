@@ -824,6 +824,9 @@ a { color: inherit; text-decoration: none; }
    into the product so baked-in poster text stays out of frame. */
 .img-bottom { object-position: 50% 82%; --zoom: 1.12; --zoom-o: 50% 82%; }
 .pos-far-r { object-position: 100% 55%; --zoom: 2; --zoom-o: 97% 55%; }
+.pos-b { object-position: 50% 85%; --zoom: 1.5; --zoom-o: 50% 88%; }
+.pos-br { object-position: 80% 75%; --zoom: 1.8; --zoom-o: 82% 78%; }
+.pos-cone { object-position: 100% 60%; --zoom: 2.1; --zoom-o: 95% 62%; }
 .img-deep { object-position: 50% 90%; --zoom: 1.15; --zoom-o: 50% 92%; }
 .pos-l { object-position: 12% 55%; --zoom: 1.65; --zoom-o: 14% 60%; }
 .pos-r { object-position: 80% 55%; --zoom: 1.6; --zoom-o: 78% 58%; }
