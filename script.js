@@ -98,6 +98,117 @@ if (menuCount) {
   menuCount.textContent = `${cards.length} treats on display`;
 }
 
+/* ---------- hero: cinematic scroll-driven video slider ---------- */
+// One virtual position drives everything: the idle auto-cycle tweens it
+// forward while the page rests at the top, and scrolling through the
+// hero runway scrubs it directly, wiping each reel into the next.
+const heroEl = document.querySelector(".hero--slider");
+if (heroEl) {
+  const slides = [...heroEl.querySelectorAll(".hero-slide")];
+  const dots = [...heroEl.querySelectorAll(".hero__dots span")];
+  const heroTitle = document.getElementById("heroTitle");
+  const heroTitles = [
+    "Berry <span>Good Vibes</span>",
+    "Berry Berry <span>Delicious</span>",
+    "Nutty <span>Pista Delight</span>",
+  ];
+  const N = slides.length;
+
+  if (prefersReducedMotion) {
+    slides[0].style.visibility = "visible";
+  } else {
+    // Lazy-load the reels after everything else; a missing file simply
+    // leaves the poster photo in place.
+    window.addEventListener("load", () => {
+      slides.forEach((slide) => {
+        const src = slide.dataset.video;
+        if (!src) return;
+        const v = document.createElement("video");
+        v.muted = true;
+        v.loop = true;
+        v.playsInline = true;
+        v.preload = "metadata";
+        v.src = src;
+        v.addEventListener("loadeddata", () => {
+          slide.appendChild(v);
+          requestAnimationFrame(() => v.classList.add("is-ready"));
+          v.play().catch(() => {});
+        });
+        v.addEventListener("error", () => v.remove());
+      });
+    });
+
+    let basePos = 0; // whole slides advanced by the idle auto-cycle
+    let tweenFrom = 0, tweenStart = 0, tweening = false;
+    const TWEEN_MS = 1500;
+    let lastShown = 0;
+
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const smooth = (t) => t * t * (3 - 2 * t);
+
+    const scrollPos = () => {
+      const rect = heroEl.getBoundingClientRect();
+      const runway = heroEl.offsetHeight - window.innerHeight;
+      return runway > 0 ? clamp(-rect.top / runway, 0, 1) * (N - 1) : 0;
+    };
+
+    const renderHero = (now) => {
+      let pos = basePos;
+      if (tweening) {
+        const t = clamp((now - tweenStart) / TWEEN_MS, 0, 1);
+        pos = tweenFrom + easeInOut(t);
+        if (t >= 1) {
+          tweening = false;
+          basePos = Math.round(pos) % N;
+          pos = basePos;
+        }
+      }
+      pos = (pos + scrollPos()) % N;
+      const idx = Math.floor(pos) % N;
+      const frac = smooth(pos - Math.floor(pos));
+      const next = (idx + 1) % N;
+
+      slides.forEach((slide, i) => {
+        if (i === idx) {
+          slide.style.visibility = "visible";
+          slide.style.zIndex = 1;
+          slide.style.clipPath = "none";
+        } else if (i === next && frac > 0.001) {
+          slide.style.visibility = "visible";
+          slide.style.zIndex = 2;
+          slide.style.clipPath = `inset(0 0 0 ${(1 - frac) * 100}%)`;
+        } else {
+          slide.style.visibility = "hidden";
+          slide.style.zIndex = 0;
+        }
+      });
+
+      const shown = frac > 0.5 ? next : idx;
+      if (shown !== lastShown) {
+        lastShown = shown;
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === shown));
+        if (heroTitle) {
+          heroTitle.classList.add("is-swapping");
+          setTimeout(() => {
+            heroTitle.innerHTML = heroTitles[shown] || "";
+            heroTitle.classList.remove("is-swapping");
+          }, 240);
+        }
+      }
+      requestAnimationFrame(renderHero);
+    };
+    requestAnimationFrame(renderHero);
+
+    setInterval(() => {
+      if (!tweening && scrollPos() === 0 && document.visibilityState === "visible") {
+        tweenFrom = basePos;
+        tweenStart = performance.now();
+        tweening = true;
+      }
+    }, 7000);
+  }
+}
+
 /* ---------- reveal on scroll ---------- */
 const revealables = document.querySelectorAll(".reveal");
 if ("IntersectionObserver" in window && !prefersReducedMotion) {

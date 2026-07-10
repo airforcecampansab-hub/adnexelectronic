@@ -234,13 +234,85 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
-.hero__video {
+/* scroll-driven cinematic slider: the section is a tall runway, the
+   viewport stays pinned while scroll progress wipes between slides */
+.hero--slider { display: block; height: 280vh; }
+
+.hero__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* isolate the slides' own z-index churn so the veil always sits above them */
+.hero__slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero--slider .hero__veil { z-index: 1; }
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  visibility: hidden;
+  will-change: clip-path;
+}
+.hero-slide img,
+.hero-slide video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.05) brightness(0.85);
+  filter: saturate(1.05) brightness(0.62);
+}
+/* the stand-in posters carry baked-in campaign text along the top —
+   zoom past it into the product; reels replace them untouched */
+.hero-slide img {
+  object-position: 50% 62%;
+  transform: scale(1.35);
+}
+.hero-slide video { opacity: 0; transition: opacity 0.8s var(--ease); }
+.hero-slide video.is-ready { opacity: 1; }
+
+.hero--slider .hero__veil {
+  background:
+    radial-gradient(ellipse at 50% 110%, rgba(232, 185, 104, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(10, 10, 15, 0.78) 0%, rgba(10, 10, 15, 0.5) 45%, rgba(10, 10, 15, 0.94) 100%);
+}
+
+.hero--slider .hero__title {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+.hero--slider .hero__title.is-swapping { opacity: 0; transform: translateY(12px); }
+
+.hero__dots {
+  position: absolute;
+  bottom: 2.4rem;
+  right: 2.6rem;
+  display: flex;
+  gap: 0.45rem;
+  z-index: 2;
+}
+.hero__dots span {
+  width: 26px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(244, 241, 234, 0.25);
+  transition: background 0.4s var(--ease), width 0.4s var(--ease);
+}
+.hero__dots span.is-active { width: 42px; background: var(--gold); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero--slider { height: auto; min-height: 100svh; }
+  .hero__dots { display: none; }
 }
 
 .hero__veil {

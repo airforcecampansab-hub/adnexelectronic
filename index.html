@@ -33,23 +33,40 @@
     </div>
   </header>
 
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="top">
-    <video class="hero__video" autoplay muted loop playsinline poster="assets/falooda-royal.jpeg">
-      <source src="assets/hero-reel.mp4" type="video/mp4" />
-    </video>
-    <div class="hero__veil"></div>
-    <div class="hero__content">
-      <p class="hero__eyebrow reveal">House of Icecreams &amp; Pastries</p>
-      <h1 class="hero__title reveal">Dive Into the<br /><span>Creamiest</span> Adventure</h1>
-      <p class="hero__sub reveal">Handcrafted faloodas, towering sundaes and celebration cakes —
-        layered, drizzled and finished like nowhere else. Tastes as good as it looks.</p>
-      <div class="hero__actions reveal">
-        <a href="#menu" class="btn btn--gold">Explore the Menu</a>
-        <a href="#story" class="btn btn--ghost">Our Story</a>
+  <!-- ================= HERO (cinematic scroll-driven slider) =================
+       Drop the three AI showcase reels into assets/ as:
+         hero-strawberry.mp4 · hero-blueberry.mp4 · hero-pista.mp4
+       Each slide plays its reel once the file exists; until then the
+       matching product photo stands in as the cinematic poster. -->
+  <section class="hero hero--slider" id="top">
+    <div class="hero__sticky">
+      <div class="hero__slides" id="heroSlides">
+        <figure class="hero-slide" data-video="assets/hero-strawberry.mp4">
+          <img src="assets/strawberry-bowl.jpeg" alt="Strawberry ice cream scoops in a glass bowl with fresh strawberries and mint" />
+        </figure>
+        <figure class="hero-slide" data-video="assets/hero-blueberry.mp4">
+          <img src="assets/berry-cup.jpeg" alt="Rich purple blueberry ice cream swirl with frosted blueberries" loading="lazy" />
+        </figure>
+        <figure class="hero-slide" data-video="assets/hero-pista.mp4">
+          <img src="assets/pista-bowl.jpeg" alt="Creamy pistachio ice cream scoops topped with roasted pistachios" loading="lazy" />
+        </figure>
       </div>
+      <div class="hero__veil"></div>
+      <div class="hero__content">
+        <p class="hero__eyebrow reveal">Iceberg — Premium Desserts</p>
+        <h1 class="hero__title reveal" id="heroTitle">Berry <span>Good Vibes</span></h1>
+        <p class="hero__sub reveal">Handcrafted faloodas, towering sundaes and celebration cakes —
+          layered, drizzled and finished like nowhere else. Tastes as good as it looks.</p>
+        <div class="hero__actions reveal">
+          <a href="#menu" class="btn btn--gold">Explore the Menu</a>
+          <a href="#story" class="btn btn--ghost">Our Story</a>
+        </div>
+      </div>
+      <div class="hero__dots" id="heroDots" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span></div>
     </div>
-    <div class="hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
   <!-- ================= MARQUEE ================= -->
