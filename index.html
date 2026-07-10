@@ -38,13 +38,17 @@
        suspended hero shot → reconstruction → glide left → glass info card.
        Idle at the top of the page the timeline plays itself in real time;
        scrolling scrubs the same timeline. Ingredient orbs are focal-point
-       crops carved from the same campaign poster as the dessert. -->
+       crops carved from the same campaign poster as the dessert.
+       Drop the CGI reels into assets/ as strawberry.mp4, blueberry.mp4 and
+       pista.mp4: on desktop each act then plays its reel full-bleed (idle)
+       and scrubs it by scroll; phones and reduced-data connections keep the
+       lightweight poster-crop animation as the fallback. -->
   <section class="hero hero--cine" id="top">
     <div class="hero__sticky">
       <div class="cine__bg" aria-hidden="true"></div>
 
       <div class="cine__acts">
-        <article class="cine-act" aria-label="Berry Good Vibes — strawberry ice cream">
+        <article class="cine-act" data-video="assets/strawberry.mp4" aria-label="Berry Good Vibes — strawberry ice cream">
           <div class="cine-act__tint" style="--tint: rgba(229, 105, 127, 0.16)" aria-hidden="true"></div>
           <span class="cine-act__shadow" aria-hidden="true"></span>
           <div class="cine-act__dessert">
@@ -67,7 +71,7 @@
           </aside>
         </article>
 
-        <article class="cine-act" aria-label="Berry Berry Delicious — blueberry ice cream">
+        <article class="cine-act" data-video="assets/blueberry.mp4" aria-label="Berry Berry Delicious — blueberry ice cream">
           <div class="cine-act__tint" style="--tint: rgba(146, 92, 178, 0.17)" aria-hidden="true"></div>
           <span class="cine-act__shadow" aria-hidden="true"></span>
           <div class="cine-act__dessert">
@@ -89,7 +93,7 @@
           </aside>
         </article>
 
-        <article class="cine-act" aria-label="Nutty Pista Delight — pistachio ice cream">
+        <article class="cine-act" data-video="assets/pista.mp4" aria-label="Nutty Pista Delight — pistachio ice cream">
           <div class="cine-act__tint" style="--tint: rgba(151, 162, 92, 0.16)" aria-hidden="true"></div>
           <span class="cine-act__shadow" aria-hidden="true"></span>
           <div class="cine-act__dessert">
@@ -541,27 +545,94 @@
     </div>
   </section>
 
-  <!-- ================= GALLERY ================= -->
-  <section class="gallery section" id="gallery">
-    <div class="section__head reveal">
-      <p class="section__eyebrow">Gallery</p>
-      <h2 class="section__title">Tastes as Good as It Looks</h2>
-    </div>
-    <div class="gallery__grid">
-      <figure class="reveal"><img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista almond icecream tower" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/strawberry-duo.jpeg" alt="Two strawberry faloodas in stem glasses" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-b" src="assets/car-cake.jpeg" alt="Customized car-themed birthday cake" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/falooda-classic.jpeg" alt="Classic falooda with umbrella and wafers" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-l" src="assets/jar-falooda.jpeg" alt="Mason jar falooda with whipped cream" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-b" src="assets/choco-cake.jpeg" alt="Chocolate cake slice with ganache pour" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-b" src="assets/doll-cake.jpeg" alt="Customized princess doll cake with rosette frosting" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-b" src="assets/rose-cake.jpeg" alt="Customized cake with fresh roses and fairy door" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/choc-sundae.jpeg" alt="Chocolate sundae with wafer roll in a glass bowl" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-l" src="assets/flavor-cakes.jpeg" alt="Assorted celebration cakes in every flavour" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-r" src="assets/scoops-happiness.jpeg" alt="Sprinkle-covered scoops in a waffle basket with a cherry" loading="lazy" /></figure>
-    </div>
-    <p class="gallery__handle reveal">Follow the daily counter — <a href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">@iceberg_ndl</a></p>
-  </section>
+  <!-- ================= COLLECTIONS (cinematic full-screen gallery) =================
+       Replaces the gallery grid: one full-screen scene per category that
+       snaps into view on scroll (CSS scroll-snap), with a parallax
+       backdrop and frameless glass product chips. -->
+  <div class="collections" id="gallery">
+
+    <section class="collection" data-menu="cake">
+      <div class="collection__bg"><img src="assets/rose-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 72%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Cakes</h2>
+          <p class="collection__sub">Tiered, themed and baked to order — centrepieces for every celebration.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/car-cake.jpeg" alt="Customized car-themed birthday cake" loading="lazy" style="object-position: 48% 84%" /></span>
+            <span class="collection__meta"><strong>Customized Cakes</strong><em>from ₹999</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" style="object-position: 50% 78%" /></span>
+            <span class="collection__meta"><strong>Wedding Cakes</strong><em>from ₹1,999</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/doll-cake.jpeg" alt="Princess doll cake with rosette frosting" loading="lazy" style="object-position: 50% 78%" /></span>
+            <span class="collection__meta"><strong>Theme Cakes</strong><em>from ₹999</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="cake">Browse all cakes →</a>
+      </div>
+    </section>
+
+    <section class="collection" data-menu="icecream">
+      <div class="collection__bg"><img src="assets/scoops-happiness.jpeg" alt="" loading="lazy" style="object-position: 70% 55%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Ice Creams</h2>
+          <p class="collection__sub">Slow-churned scoops, sundaes and cones — finished by hand at the counter.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/dipped-cone.jpeg" alt="Choco-dipped waffle cone" loading="lazy" style="object-position: 96% 62%" /></span>
+            <span class="collection__meta"><strong>Choco-Dipped Cone</strong><em>₹89</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/cherry-sundae.jpeg" alt="Cherry scoop sundae" loading="lazy" style="object-position: 52% 62%" /></span>
+            <span class="collection__meta"><strong>Cherry Scoop Sundae</strong><em>₹149</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/pista-bowl.jpeg" alt="Nutty pista delight bowl" loading="lazy" style="object-position: 48% 62%" /></span>
+            <span class="collection__meta"><strong>Nutty Pista Delight</strong><em>₹139</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="icecream">Browse all ice creams →</a>
+      </div>
+    </section>
+
+    <section class="collection" data-menu="pastry">
+      <div class="collection__bg"><img src="assets/choco-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 75%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Pastries</h2>
+          <p class="collection__sub">Slices, éclairs, tarts and tea cakes — the counter changes daily.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" style="object-position: 50% 80%" /></span>
+            <span class="collection__meta"><strong>Pastries &amp; Slices</strong><em>from ₹99</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl" loading="lazy" style="object-position: 50% 75%" /></span>
+            <span class="collection__meta"><strong>Mango Tres Leches</strong><em>₹199</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/mango-jar-cake.jpeg" alt="Mango jar cake" loading="lazy" style="object-position: 50% 80%" /></span>
+            <span class="collection__meta"><strong>Mango Jar Cake</strong><em>₹179</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="pastry">Browse all pastries →</a>
+      </div>
+    </section>
+
+  </div>
 
   <!-- ================= VISIT / CTA ================= -->
   <section class="visit section" id="visit">

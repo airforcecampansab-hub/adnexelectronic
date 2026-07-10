@@ -131,9 +131,36 @@ if (cine) {
   if (prefersReducedMotion) {
     cine.classList.add("is-static");
   } else {
+    // CGI reels (assets/strawberry.mp4 · blueberry.mp4 · pista.mp4) take
+    // over an act's stage when present. Phones and save-data connections
+    // skip them entirely and keep the lightweight poster-crop animation.
+    const allowVideo = !narrow.matches && !(navigator.connection && navigator.connection.saveData);
+    if (allowVideo) {
+      window.addEventListener("load", () => {
+        acts.forEach((p) => {
+          const src = p.act.dataset.video;
+          if (!src) return;
+          const v = document.createElement("video");
+          v.muted = true;
+          v.loop = true;
+          v.playsInline = true;
+          v.preload = "metadata";
+          v.className = "cine-act__reel";
+          v.src = src;
+          v.addEventListener("loadedmetadata", () => {
+            p.act.prepend(v);
+            p.act.classList.add("has-reel");
+            p.reel = v;
+          });
+          v.addEventListener("error", () => v.remove());
+        });
+      });
+    }
+
     const sparkleLayer = document.getElementById("cineSparkles");
     const sparkles = [];
-    for (let i = 0; i < 14; i++) {
+    const sparkleCount = narrow.matches ? 7 : 14;
+    for (let i = 0; i < sparkleCount; i++) {
       const s = document.createElement("i");
       s.textContent = "\u2726";
       s.style.left = `${18 + Math.random() * 64}%`;
@@ -153,10 +180,33 @@ if (cine) {
     ];
     const eyebrow = cine.querySelector(".cine__eyebrow");
 
-    const applyAct = (p, u, fade) => {
+    const applyAct = (p, u, fade, scrubbing) => {
       p.act.style.opacity = fade;
       p.act.style.visibility = fade > 0.001 ? "visible" : "hidden";
-      if (fade <= 0.001) return;
+      if (fade <= 0.001) {
+        if (p.reel && !p.reel.paused) p.reel.pause();
+        return;
+      }
+
+      // a loaded reel replaces the code-performed stage: it plays in real
+      // time while idle and is seeked directly when scroll scrubs the act
+      if (p.reel && p.reel.duration) {
+        if (scrubbing) {
+          if (!p.reel.paused) p.reel.pause();
+          // compare against the last requested target, not currentTime —
+          // re-issuing seeks because the browser landed on a keyframe
+          // would fight the decoder forever
+          const t = u * p.reel.duration;
+          if (p.reelTarget === undefined || Math.abs(p.reelTarget - t) > 0.04) {
+            p.reelTarget = t;
+            p.reel.currentTime = t;
+          }
+        } else if (p.reel.paused) {
+          p.reelTarget = undefined;
+          p.reel.currentTime = u * p.reel.duration;
+          p.reel.play().catch(() => {});
+        }
+      }
 
       const isN = narrow.matches;
       const explode = outCubic(seg(u, 0, 0.08));
@@ -234,11 +284,12 @@ if (cine) {
       const idx = Math.floor(P);
       const u = P - idx;
       const cross = inOut(seg(u, 0.94, 1));
+      const scrubbing = sp > 0;
 
       acts.forEach((p, i) => {
-        if (i === idx) applyAct(p, u, 1 - cross);
-        else if (i === (idx + 1) % N) applyAct(p, 0, cross);
-        else applyAct(p, 0, 0);
+        if (i === idx) applyAct(p, u, 1 - cross, scrubbing);
+        else if (i === (idx + 1) % N) applyAct(p, 0, cross, scrubbing);
+        else applyAct(p, 0, 0, scrubbing);
       });
 
       if (idx !== lastDot) {
@@ -401,6 +452,48 @@ if (stage && stage.dataset.splineScene) {
       requestAnimationFrame(sway);
     }
   })(0);
+}
+
+/* ---------- collections: parallax backdrops + menu handoff ---------- */
+const collections = [...document.querySelectorAll(".collection")];
+if (collections.length) {
+  if (!prefersReducedMotion) {
+    const scenes = collections.map((sec) => ({
+      sec,
+      img: sec.querySelector(".collection__bg img"),
+    }));
+    let parallaxQueued = false;
+    const parallax = () => {
+      parallaxQueued = false;
+      const vh = window.innerHeight;
+      scenes.forEach(({ sec, img }) => {
+        const r = sec.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        // -1 (below viewport) … 1 (above); backdrop drifts against scroll
+        const t = clamp((r.top + r.height / 2 - vh / 2) / vh, -1, 1);
+        img.style.transform = `translateY(${t * 6}svh)`;
+      });
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!parallaxQueued) {
+          parallaxQueued = true;
+          requestAnimationFrame(parallax);
+        }
+      },
+      { passive: true }
+    );
+    parallax();
+  }
+
+  // "Browse all …" pre-selects the matching menu category on the way down
+  document.querySelectorAll(".collection__cta[data-filter]").forEach((cta) => {
+    cta.addEventListener("click", () => {
+      const tab = document.querySelector(`.menu__tab[data-filter="${cta.dataset.filter}"]`);
+      if (tab) tab.click();
+    });
+  });
 }
 
 /* ---------- footer year ---------- */

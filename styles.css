@@ -22,7 +22,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
 
 body {
   background: var(--bg-0);
@@ -287,6 +287,19 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   background: radial-gradient(58% 52% at 50% 56%, var(--tint), transparent 72%);
 }
+
+/* a loaded CGI reel becomes the act's whole stage */
+.cine-act__reel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cine-act.has-reel .cine-act__tint,
+.cine-act.has-reel .cine-act__dessert,
+.cine-act.has-reel .cine-act__orb,
+.cine-act.has-reel .cine-act__shadow { display: none; }
 
 /* the dessert and its ingredient orbs are focal-point crops of the same
    poster: transform-origin picks the subject, --crop zooms onto it */
@@ -1285,3 +1298,128 @@ a { color: inherit; text-decoration: none; }
 @supports (padding: env(safe-area-inset-bottom)) {
   .footer { padding-bottom: calc(3rem + env(safe-area-inset-bottom)); }
 }
+
+/* ---------- collections: cinematic full-screen category scenes ---------- */
+
+.collection {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+.collection__bg {
+  position: absolute;
+  inset: -12svh 0; /* headroom for the parallax drift */
+  z-index: 0;
+}
+.collection__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) brightness(0.75);
+  will-change: transform;
+}
+
+.collection__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 15, 0.55) 0%, rgba(10, 10, 15, 0.15) 35%, rgba(10, 10, 15, 0.88) 88%),
+    linear-gradient(90deg, rgba(10, 10, 15, 0.45), transparent 55%);
+}
+
+.collection__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(5rem, 12vh, 8rem) clamp(1.25rem, 6vw, 6rem) clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.collection__head { max-width: 560px; }
+.collection__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.collection__sub { color: var(--ink-dim); margin-top: 0.7rem; max-width: 46ch; }
+
+.collection__items {
+  list-style: none;
+  display: flex;
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  flex-wrap: wrap;
+  margin: clamp(1.6rem, 4vh, 2.6rem) 0 0;
+  padding: 0;
+}
+
+/* frameless glass chips — the product reads against the scene, not a box */
+.collection__item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.55rem 1.3rem 0.55rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 14px 40px rgba(0, 0, 0, 0.35);
+  transition: transform 0.45s var(--ease), background 0.45s var(--ease);
+}
+.collection__item:hover { transform: translateY(-4px); background: rgba(255, 255, 255, 0.11); }
+
+.collection__thumb {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.collection__thumb img { width: 100%; height: 100%; object-fit: cover; transform: scale(2.2); }
+
+.collection__meta { display: flex; flex-direction: column; line-height: 1.35; }
+.collection__meta strong { font-weight: 500; font-size: 0.92rem; }
+.collection__meta em {
+  font-style: normal;
+  font-size: 0.78rem;
+  color: var(--gold-soft);
+  letter-spacing: 0.04em;
+}
+
+.collection__cta {
+  display: inline-block;
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(232, 185, 104, 0.35);
+  padding-bottom: 0.25rem;
+  transition: color 0.3s, border-color 0.3s;
+}
+.collection__cta:hover { color: var(--gold-soft); border-color: var(--gold); }
+
+/* staggered entrance for the chips */
+.collection__items .collection__item:nth-child(2) { transition-delay: 0.12s; }
+.collection__items .collection__item:nth-child(3) { transition-delay: 0.24s; }
+
+@media (max-width: 760px) {
+  .collection { align-items: flex-end; }
+  .collection__items { flex-direction: column; align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+  .collection__bg { inset: 0; }
+}
+
