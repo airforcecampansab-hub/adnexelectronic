@@ -28,6 +28,7 @@ function upgradeVideo(id, preferred) {
 }
 upgradeVideo("heroVideo", "assets/hero-black-forest.mp4");
 upgradeVideo("sundaeVideo", "assets/cherry-vanilla-sundae.mp4");
+upgradeVideo("berryVideo", "assets/berry-berry-delicious.mp4");
 
 /* ---------- sticky nav ---------- */
 const nav = document.getElementById("nav");

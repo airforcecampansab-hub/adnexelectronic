@@ -1277,3 +1277,12 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 460px) {
   .glasscard__ings { grid-template-columns: 1fr; }
 }
+
+/* Berry showcase — purple-tinted stage + single-column ingredient list */
+.featured--berry {
+  background:
+    radial-gradient(900px 600px at 88% 18%, rgba(139, 92, 246, 0.12), transparent 60%),
+    radial-gradient(760px 560px at 10% 92%, rgba(232, 185, 104, 0.06), transparent 60%),
+    var(--bg-0);
+}
+.glasscard__ings--single { grid-template-columns: 1fr; }
