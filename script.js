@@ -118,11 +118,7 @@ if (cine) {
     orbs: [...act.querySelectorAll(".cine-act__orb")],
     card: act.querySelector(".cine-act__card"),
     line: act.querySelector(".cine-act__line"),
-    rows: [
-      ...act.querySelectorAll(".cine-act__list li"),
-      act.querySelector(".cine-act__price"),
-      act.querySelector(".cine-act__cta"),
-    ],
+    rows: [...act.querySelectorAll(".cine-act__desc, .cine-act__cta")],
   }));
   const dots = [...cine.querySelectorAll(".hero__dots span")];
   const N = acts.length;

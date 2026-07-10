@@ -285,7 +285,9 @@ a { color: inherit; text-decoration: none; }
 .cine-act__tint {
   position: absolute;
   inset: 0;
-  background: radial-gradient(58% 52% at 50% 56%, var(--tint), transparent 72%);
+  background:
+    radial-gradient(58% 52% at 50% 56%, var(--tint), transparent 72%),
+    linear-gradient(180deg, color-mix(in srgb, var(--stage, #050508) 80%, #000), var(--stage, #050508) 45%, #050508);
 }
 
 /* a loaded CGI reel becomes the act's whole stage */
@@ -294,9 +296,11 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* the spots are 9:16 — contain them over the flavor stage on wide
+     screens instead of cropping the choreography away */
+  object-fit: contain;
+  filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.55));
 }
-.cine-act.has-reel .cine-act__tint,
 .cine-act.has-reel .cine-act__dessert,
 .cine-act.has-reel .cine-act__orb,
 .cine-act.has-reel .cine-act__shadow { display: none; }
@@ -415,6 +419,14 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: var(--ink-faint);
   margin-top: 0.15rem;
+}
+
+.cine-act__desc {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--ink-dim);
+  margin-top: 0.9rem;
+  max-width: 30ch;
 }
 
 .cine-act__cta { margin-top: 1.2rem; padding: 0.7rem 1.7rem; font-size: 0.85rem; }
