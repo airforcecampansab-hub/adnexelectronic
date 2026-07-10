@@ -1286,3 +1286,175 @@ a { color: inherit; text-decoration: none; }
     var(--bg-0);
 }
 .glasscard__ings--single { grid-template-columns: 1fr; }
+
+/* ============================================================
+   SIGNATURE FLAVOURS — CGI-style showcase with switcher
+   ============================================================ */
+
+.flavour {
+  background:
+    radial-gradient(1000px 700px at 50% -10%, color-mix(in srgb, var(--accent, #ff5b7a) 12%, transparent), transparent 60%),
+    var(--bg-0);
+  transition: background 0.8s var(--ease);
+}
+
+/* switcher chips */
+.flavour__switch {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.flavour__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 999px;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  transition: all 0.35s var(--ease);
+}
+.flavour__chip span { font-size: 1.05rem; }
+.flavour__chip:hover { color: var(--ink); transform: translateY(-1px); }
+.flavour__chip.is-active {
+  color: #fff;
+  border-color: color-mix(in srgb, var(--chip-accent, #ff5b7a) 60%, white 10%);
+  background: color-mix(in srgb, var(--chip-accent, #ff5b7a) 26%, transparent);
+  box-shadow: 0 8px 26px color-mix(in srgb, var(--chip-accent, #ff5b7a) 30%, transparent);
+}
+
+/* panels */
+.flavour__deck { max-width: 1200px; margin: 0 auto; }
+.flavourpanel { display: none; }
+.flavourpanel.is-active { display: block; animation: panelIn 0.7s var(--ease) both; }
+@keyframes panelIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* stage — accent glow ring behind the product */
+.flavour__stage { background: radial-gradient(90% 80% at 50% 45%, color-mix(in srgb, var(--accent) 22%, #0a0a0f), #08070c 78%); }
+.flavour__stage::before {
+  content: "";
+  position: absolute;
+  inset: 8% 12%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 45%, transparent), transparent 62%);
+  filter: blur(38px);
+  opacity: 0.7;
+}
+
+.flavour__float {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  animation: flavourFloat 7s ease-in-out infinite;
+}
+@keyframes flavourFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+.flavour__shot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* zoom into the bowl so the posters' baked-in text stays out of frame */
+  object-position: 50% 58%;
+  transform: scale(1.62);
+  transform-origin: 50% 58%;
+  /* reconstruct entrance — toggled by .is-playing */
+  transition: opacity 1.3s var(--ease), transform 1.3s var(--ease), filter 1.3s var(--ease);
+}
+.shot--straw { object-position: 50% 62%; transform-origin: 50% 62%; }
+.shot--berry { object-position: 50% 55%; transform-origin: 50% 55%; }
+.shot--pista { object-position: 50% 54%; transform-origin: 50% 54%; }
+
+.flavourpanel:not(.is-playing) .flavour__shot {
+  opacity: 0;
+  transform: scale(1.82) translateY(-10px);
+  filter: blur(12px) brightness(1.25);
+}
+.flavourpanel.is-playing .flavour__shot { opacity: 1; transform: scale(1.62); filter: none; }
+
+/* sparkle particles */
+.flavour__fx { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.flavour__fx i {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 40%, #fff);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, #fff);
+  opacity: 0;
+}
+.flavourpanel.is-playing .flavour__fx i { animation: sparkle 3.4s var(--ease) infinite; }
+.flavour__fx i:nth-child(1) { top: 22%; left: 26%; animation-delay: 0.2s; }
+.flavour__fx i:nth-child(2) { top: 34%; left: 72%; animation-delay: 0.9s; }
+.flavour__fx i:nth-child(3) { top: 62%; left: 30%; animation-delay: 1.5s; }
+.flavour__fx i:nth-child(4) { top: 70%; left: 66%; animation-delay: 2.1s; }
+.flavour__fx i:nth-child(5) { top: 46%; left: 50%; animation-delay: 2.7s; }
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  40% { opacity: 1; transform: scale(1.1); }
+  70% { opacity: 0.2; transform: scale(0.7) translateY(-8px); }
+}
+
+/* injected real video sits above the photo */
+.flavour__stage .featured__video { z-index: 3; }
+
+/* connector-rail ingredient list (thin line + dot per item, points toward dessert) */
+.glasscard__ings--rail { position: relative; padding-left: 1.1rem; }
+.glasscard__ings--rail::before {
+  content: "";
+  position: absolute;
+  left: 3px; top: 10%; bottom: 10%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+}
+.glasscard__ings--rail .ing { position: relative; }
+.glasscard__ings--rail .ing::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem; top: 50%;
+  width: 6px; height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--accent, var(--gold));
+  box-shadow: 0 0 10px var(--accent, var(--gold));
+}
+
+/* replay glass-card ingredient stagger per active panel */
+.flavourpanel.is-playing .ing {
+  opacity: 1;
+  transform: none;
+  animation: ingGlow 1.1s var(--ease) both;
+  animation-delay: calc(var(--i) * 80ms + 260ms);
+}
+.flavourpanel.is-playing .glasscard { animation: panelIn 0.7s var(--ease) both; }
+
+/* tint the active card border with the flavour accent */
+.flavourpanel .glasscard { border-color: color-mix(in srgb, var(--accent) 26%, rgba(255, 255, 255, 0.2)); }
+.flavourpanel .glasscard__price { text-shadow: 0 0 30px color-mix(in srgb, var(--accent) 40%, transparent); }
+.flavourpanel .glasscard__cur { color: var(--accent); }
+
+/* ---------- mobile: simplified, photo-first, no float/particle load ---------- */
+@media (max-width: 860px) {
+  .flavour__float { animation: none; }
+}
+@media (max-width: 640px) {
+  .flavour__shot { transform: scale(1.5); }
+  .flavourpanel.is-playing .flavour__shot { transform: scale(1.5); }
+  .flavourpanel:not(.is-playing) .flavour__shot { transform: scale(1.62); filter: blur(6px); }
+  .flavour__fx { display: none; }
+  .flavour__switch { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
+  .flavour__switch::-webkit-scrollbar { display: none; }
+  .flavour__chip { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flavour__float { animation: none; }
+  .flavourpanel:not(.is-playing) .flavour__shot { opacity: 1; transform: scale(1.2); filter: none; }
+  .flavour__fx { display: none; }
+}

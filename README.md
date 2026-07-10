@@ -37,17 +37,24 @@ no code change needed. Until it exists, the hero plays `assets/hero-reel.mp4`
 as a fallback, so the site is never left with a blank hero. For best
 compression you can also add a `.webm` and list it as an extra `<source>`.
 
-## Featured showcase video (Cherry Vanilla Sundae)
+## Signature Flavours showcase (Strawberry · Berry · Pista)
 
-The Featured section pairs a looping CGI commercial (left) with an
-Apple-style glassmorphism spec card (right). Drop your CGI file in as:
+A single switchable showcase pairs a cinematic product stage (left) with an
+Apple-style glassmorphism spec card (right). Each flavour's stage shows the
+product photo with a scroll-triggered "reconstruct" motion (mimicking the
+CGI exploded-view → reassembly) and re-plays on every switch.
+
+Drop your CGI commercials in with these exact names to auto-upgrade each
+stage from photo to video (desktop; the photo stays as the mobile fallback):
 
 ```
-assets/cherry-vanilla-sundae.mp4   (muted, H.264/AAC MP4, faststart)
+assets/strawberry.mp4
+assets/blueberry.mp4
+assets/pista.mp4
 ```
 
-Same auto-upgrade mechanism as the hero — it swaps in on load when present,
-and falls back to `assets/hero-reel.mp4` until then.
+All muted, H.264/AAC MP4, faststart, ~1080p. Product-photo posters live at
+`assets/strawberry-hero.png`, `assets/berry-hero.jpeg`, `assets/pista-hero.png`.
 
 ## Embedding a Spline 3D model
 

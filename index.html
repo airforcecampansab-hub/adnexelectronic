@@ -482,87 +482,104 @@
   </section>
 
 
-  <!-- ================= FEATURED PRODUCT SHOWCASE ================= -->
+  <!-- ================= SIGNATURE FLAVOURS (CGI showcase) ================= -->
   <!--
-    Split showcase: looping CGI commercial on the left, glassmorphism
-    spec card on the right. Drop the video in as
-    assets/cherry-vanilla-sundae.mp4 and it auto-upgrades on load;
-    until then it loops assets/hero-reel.mp4 as a fallback.
+    Cinematic flavour showcase. Each panel shows the product photo with a
+    scroll-triggered "reconstruct" motion (mimicking the CGI exploded-view →
+    reassembly) plus an Apple-style glassmorphism spec card. Drop real
+    commercials in as assets/strawberry.mp4, assets/blueberry.mp4 and
+    assets/pista.mp4 — each panel auto-upgrades to its video on load
+    (desktop); the photo is the fallback on mobile / until the file exists.
   -->
-  <section class="featured section" id="featured">
-    <div class="featured__grid">
-
-      <!-- LEFT — CGI commercial -->
-      <figure class="featured__stage reveal">
-        <video class="featured__video" id="sundaeVideo" autoplay muted loop playsinline preload="auto"
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Crect width='4' height='5' fill='%230a0a0f'/%3E%3C/svg%3E">
-          <source src="assets/hero-reel.mp4" type="video/mp4" />
-        </video>
-        <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
-      </figure>
-
-      <!-- RIGHT — Apple-style glassmorphism card -->
-      <aside class="glasscard reveal" aria-label="Cherry Vanilla Sundae details">
-        <p class="glasscard__eyebrow">Featured Creation</p>
-        <h3 class="glasscard__title">Cherry Vanilla<br />Sundae</h3>
-        <p class="glasscard__lead">Vanilla soft serve, glossy cherry sauce and fresh fruit, layered and finished in crystal glass.</p>
-
-        <ul class="glasscard__ings">
-          <li class="ing" style="--i:0"><span class="ing__ic">🍦</span><span>Vanilla Soft Serve</span></li>
-          <li class="ing" style="--i:1"><span class="ing__ic">🍒</span><span>Cherry Sauce</span></li>
-          <li class="ing" style="--i:2"><span class="ing__ic">🍓</span><span>Strawberry</span></li>
-          <li class="ing" style="--i:3"><span class="ing__ic">🫐</span><span>Blueberry</span></li>
-          <li class="ing" style="--i:4"><span class="ing__ic">🍊</span><span>Orange</span></li>
-          <li class="ing" style="--i:5"><span class="ing__ic">🍒</span><span>Cherry</span></li>
-          <li class="ing" style="--i:6"><span class="ing__ic">🍪</span><span>Cookie Crumble</span></li>
-          <li class="ing" style="--i:7"><span class="ing__ic">🧇</span><span>Wafer Stick</span></li>
-        </ul>
-
-        <div class="glasscard__foot">
-          <div class="glasscard__price"><span class="glasscard__cur">₹</span>199</div>
-          <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </aside>
-
+  <section class="flavour section" id="flavours">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">CGI Showcase</p>
+      <h2 class="section__title">Signature Flavours</h2>
+      <p class="section__sub">Exploded, suspended, reconstructed — our creamiest three in cinematic detail.</p>
     </div>
-  </section>
 
+    <div class="flavour__switch reveal" role="tablist" aria-label="Signature flavours">
+      <button class="flavour__chip is-active" data-flavour="straw" role="tab" aria-selected="true"><span>🍓</span> Strawberry</button>
+      <button class="flavour__chip" data-flavour="berry" role="tab" aria-selected="false"><span>🫐</span> Berry Berry</button>
+      <button class="flavour__chip" data-flavour="pista" role="tab" aria-selected="false"><span>🍨</span> Pista</button>
+    </div>
 
-  <!-- ================= FEATURED — BERRY BERRY DELICIOUS ================= -->
-  <!--
-    Second glassmorphism showcase. Drop the CGI file in as
-    assets/berry-berry-delicious.mp4 to auto-upgrade; falls back to
-    assets/hero-reel.mp4 until then.
-  -->
-  <section class="featured featured--berry section" id="featured-berry">
-    <div class="featured__grid">
+    <div class="flavour__deck">
 
-      <!-- LEFT — CGI commercial -->
-      <figure class="featured__stage reveal">
-        <video class="featured__video" id="berryVideo" autoplay muted loop playsinline preload="auto"
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Crect width='4' height='5' fill='%230b0810'/%3E%3C/svg%3E">
-          <source src="assets/hero-reel.mp4" type="video/mp4" />
-        </video>
-        <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
-      </figure>
-
-      <!-- RIGHT — Apple-style glassmorphism card -->
-      <aside class="glasscard reveal" aria-label="Berry Berry Delicious details">
-        <p class="glasscard__eyebrow">New Flavour</p>
-        <h3 class="glasscard__title">Berry Berry<br />Delicious</h3>
-        <p class="glasscard__lead">Rich purple blueberry ice cream swirled with fresh fruit and our signature berry infusion.</p>
-
-        <ul class="glasscard__ings glasscard__ings--single">
-          <li class="ing" style="--i:0"><span class="ing__ic">🍨</span><span>Rich Blueberry Creamy Scoops</span></li>
-          <li class="ing" style="--i:1"><span class="ing__ic">🫐</span><span>Fresh Whole Blueberries</span></li>
-          <li class="ing" style="--i:2"><span class="ing__ic">✨</span><span>Signature Berry Infusion</span></li>
-        </ul>
-
-        <div class="glasscard__foot">
-          <div class="glasscard__price"><span class="glasscard__cur">₹</span>139</div>
-          <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+      <!-- STRAWBERRY -->
+      <article class="flavourpanel is-active" data-flavour="straw" style="--accent:#ff5b7a">
+        <div class="featured__grid">
+          <figure class="featured__stage flavour__stage" data-video="assets/strawberry.mp4">
+            <div class="flavour__float"><img class="flavour__shot shot--straw" src="assets/strawberry-hero.png" alt="Strawberry Delight — strawberry ice cream in a glass bowl" loading="lazy" /></div>
+            <span class="flavour__fx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
+          </figure>
+          <aside class="glasscard" aria-label="Strawberry Delight details">
+            <p class="glasscard__eyebrow">Strawberry</p>
+            <h3 class="glasscard__title">Strawberry<br />Delight</h3>
+            <p class="glasscard__lead">Glossy strawberry ice cream, fresh fruit and vibrant red sauce in crystal glass.</p>
+            <ul class="glasscard__ings glasscard__ings--single glasscard__ings--rail">
+              <li class="ing" style="--i:0"><span class="ing__ic">🍓</span><span>Premium Strawberry Scoops</span></li>
+              <li class="ing" style="--i:1"><span class="ing__ic">🍓</span><span>Fresh Strawberry Slices</span></li>
+              <li class="ing" style="--i:2"><span class="ing__ic">❤️</span><span>Signature Red Strawberry Sauce</span></li>
+            </ul>
+            <div class="glasscard__foot">
+              <div class="glasscard__price"><span class="glasscard__cur">₹</span>139</div>
+              <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+            </div>
+          </aside>
         </div>
-      </aside>
+      </article>
+
+      <!-- BERRY BERRY -->
+      <article class="flavourpanel" data-flavour="berry" style="--accent:#9b6cff">
+        <div class="featured__grid">
+          <figure class="featured__stage flavour__stage" data-video="assets/blueberry.mp4">
+            <div class="flavour__float"><img class="flavour__shot shot--berry" src="assets/berry-hero.jpeg" alt="Berry Berry Delicious — blueberry and blackberry ice cream" loading="lazy" /></div>
+            <span class="flavour__fx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
+          </figure>
+          <aside class="glasscard" aria-label="Berry Berry Delicious details">
+            <p class="glasscard__eyebrow">Berry Berry</p>
+            <h3 class="glasscard__title">Berry Berry<br />Delicious</h3>
+            <p class="glasscard__lead">Rich blueberry and blackberry ice cream swirled with whole berries and dark berry infusion.</p>
+            <ul class="glasscard__ings glasscard__ings--single glasscard__ings--rail">
+              <li class="ing" style="--i:0"><span class="ing__ic">🫐</span><span>Rich Blueberry &amp; Blackberry Scoops</span></li>
+              <li class="ing" style="--i:1"><span class="ing__ic">🍇</span><span>Fresh Whole Berries</span></li>
+              <li class="ing" style="--i:2"><span class="ing__ic">✨</span><span>Signature Dark Berry Infusion</span></li>
+            </ul>
+            <div class="glasscard__foot">
+              <div class="glasscard__price"><span class="glasscard__cur">₹</span>139</div>
+              <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+
+      <!-- PISTA -->
+      <article class="flavourpanel" data-flavour="pista" style="--accent:#9fc15a">
+        <div class="featured__grid">
+          <figure class="featured__stage flavour__stage" data-video="assets/pista.mp4">
+            <div class="flavour__float"><img class="flavour__shot shot--pista" src="assets/pista-hero.png" alt="Nutty Pista Delight — pistachio ice cream in a rustic bowl" loading="lazy" /></div>
+            <span class="flavour__fx" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
+          </figure>
+          <aside class="glasscard" aria-label="Nutty Pista Delight details">
+            <p class="glasscard__eyebrow">Nutty Pista</p>
+            <h3 class="glasscard__title">Nutty Pista<br />Delight</h3>
+            <p class="glasscard__lead">Creamy pistachio ice cream with roasted whole pistachios and crushed nut texture.</p>
+            <ul class="glasscard__ings glasscard__ings--single glasscard__ings--rail">
+              <li class="ing" style="--i:0"><span class="ing__ic">🍨</span><span>Creamy Pistachio Scoops</span></li>
+              <li class="ing" style="--i:1"><span class="ing__ic">🥜</span><span>Premium Roasted Pistachios</span></li>
+              <li class="ing" style="--i:2"><span class="ing__ic">🌿</span><span>Crushed Pistachio Texture</span></li>
+            </ul>
+            <div class="glasscard__foot">
+              <div class="glasscard__price"><span class="glasscard__cur">₹</span>139</div>
+              <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+            </div>
+          </aside>
+        </div>
+      </article>
 
     </div>
   </section>

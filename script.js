@@ -27,8 +27,6 @@ function upgradeVideo(id, preferred) {
     .catch(() => {});
 }
 upgradeVideo("heroVideo", "assets/hero-black-forest.mp4");
-upgradeVideo("sundaeVideo", "assets/cherry-vanilla-sundae.mp4");
-upgradeVideo("berryVideo", "assets/berry-berry-delicious.mp4");
 
 /* ---------- sticky nav ---------- */
 const nav = document.getElementById("nav");
@@ -246,6 +244,89 @@ if (stage && stage.dataset.splineScene) {
     }
   })(0);
 }
+
+/* ---------- Signature Flavours: switcher + scroll-triggered "reconstruct" ----------
+   Vanilla ScrollTrigger-equivalent: the first flavour "performs" its
+   reconstruct + ingredient stagger when the section scrolls into view, and
+   every switch replays that cinematic intro. Each panel lazily upgrades its
+   stage to a real commercial (assets/strawberry.mp4 etc.) on desktop when
+   the file is present; the product photo is the animated fallback. */
+(function signatureFlavours() {
+  const section = document.getElementById("flavours");
+  if (!section) return;
+  const chips = [...section.querySelectorAll(".flavour__chip")];
+  const panels = [...section.querySelectorAll(".flavourpanel")];
+  const wantsVideo = window.matchMedia("(min-width: 641px)").matches && !prefersReducedMotion;
+  const injected = new Set();
+
+  const injectVideo = (panel) => {
+    const stage = panel.querySelector(".flavour__stage");
+    const src = stage && stage.dataset.video;
+    if (!wantsVideo || !src || injected.has(src)) return;
+    injected.add(src);
+    fetch(src, { method: "HEAD" })
+      .then((res) => {
+        if (!res.ok) return;
+        const v = document.createElement("video");
+        v.className = "featured__video";
+        v.autoplay = v.muted = v.loop = v.playsInline = true;
+        v.preload = "auto";
+        const s = document.createElement("source");
+        s.src = src;
+        s.type = "video/mp4";
+        v.appendChild(s);
+        stage.appendChild(v);
+        v.play().catch(() => {});
+      })
+      .catch(() => {});
+  };
+
+  const activate = (name) => {
+    chips.forEach((c) => {
+      const on = c.dataset.flavour === name;
+      c.classList.toggle("is-active", on);
+      c.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    panels.forEach((p) => {
+      const on = p.dataset.flavour === name;
+      p.classList.toggle("is-active", on);
+      if (on) {
+        const accent = p.style.getPropertyValue("--accent");
+        section.style.setProperty("--accent", accent);
+        const active = chips.find((c) => c.dataset.flavour === name);
+        if (active) active.style.setProperty("--chip-accent", accent);
+        // replay the reconstruct + stagger
+        p.classList.remove("is-playing");
+        void p.offsetWidth; // reflow so the animation re-runs
+        requestAnimationFrame(() => p.classList.add("is-playing"));
+        injectVideo(p);
+      }
+    });
+  };
+
+  chips.forEach((chip) =>
+    chip.addEventListener("click", () => activate(chip.dataset.flavour))
+  );
+
+  // fire the first flavour's intro when the section scrolls into view
+  const startName = (panels.find((p) => p.classList.contains("is-active")) || panels[0]).dataset.flavour;
+  if ("IntersectionObserver" in window && !prefersReducedMotion) {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            activate(startName);
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    io.observe(section);
+  } else {
+    activate(startName);
+  }
+})();
 
 /* ---------- footer year ---------- */
 document.getElementById("year").textContent = new Date().getFullYear();
