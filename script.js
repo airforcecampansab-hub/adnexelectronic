@@ -31,10 +31,30 @@ links.querySelectorAll("a").forEach((a) =>
 /* ---------- menu filter tabs ---------- */
 const tabs = document.querySelectorAll(".menu__tab");
 const cards = document.querySelectorAll(".card[data-category]");
+const menuTitle = document.getElementById("menuTitle");
+const menuTagline = document.getElementById("menuTagline");
+
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    tabs.forEach((t) => t.classList.remove("is-active"));
+    tabs.forEach((t) => {
+      t.classList.remove("is-active");
+      t.setAttribute("aria-selected", "false");
+    });
     tab.classList.add("is-active");
+    tab.setAttribute("aria-selected", "true");
+    tab.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+
+    // cinematic header cross-fade
+    if (menuTitle && tab.dataset.title) {
+      const head = menuTitle.parentElement;
+      head.classList.add("is-swapping");
+      setTimeout(() => {
+        menuTitle.innerHTML = tab.dataset.title;
+        if (menuTagline && tab.dataset.tag) menuTagline.textContent = tab.dataset.tag;
+        head.classList.remove("is-swapping");
+      }, 200);
+    }
+
     const filter = tab.dataset.filter;
     cards.forEach((card) => {
       const show = filter === "all" || card.dataset.category === filter;
