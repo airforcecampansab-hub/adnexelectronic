@@ -34,8 +34,17 @@
   </header>
 
   <!-- ================= HERO ================= -->
+  <!--
+    Full-screen cinematic video hero.
+    To use the Black Forest Torte commercial: drop the file in as
+    assets/hero-black-forest.mp4 (optionally a .webm too) — the player
+    auto-upgrades to it on load, no code change needed. Until then it
+    plays assets/hero-reel.mp4. Keep videos muted + web-optimized
+    (H.264/AAC MP4, faststart, ~1080p) for instant autoplay.
+  -->
   <section class="hero" id="top">
-    <video class="hero__video" autoplay muted loop playsinline poster="assets/falooda-royal.jpeg">
+    <video class="hero__video" id="heroVideo" autoplay muted loop playsinline preload="auto"
+      poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9'%3E%3Crect width='16' height='9' fill='%23140d08'/%3E%3C/svg%3E">
       <source src="assets/hero-reel.mp4" type="video/mp4" />
     </video>
     <div class="hero__veil"></div>

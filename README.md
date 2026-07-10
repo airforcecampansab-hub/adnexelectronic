@@ -21,6 +21,22 @@ script.js    — nav, menu filters, reveal-on-scroll, showcase slider, 3D tilt
 assets/      — brand photos + hero video
 ```
 
+## Swapping in the hero video
+
+The hero is a full-screen, muted, looping, controls-free video player,
+load-optimized with `preload="auto"` and a dark instant-paint poster.
+
+To use your **Black Forest Torte commercial**, drop the file in as:
+
+```
+assets/hero-black-forest.mp4      (H.264/AAC MP4, faststart, ~1080p, muted)
+```
+
+On load the page HEAD-checks for that file and auto-upgrades the hero to it —
+no code change needed. Until it exists, the hero plays `assets/hero-reel.mp4`
+as a fallback, so the site is never left with a blank hero. For best
+compression you can also add a `.webm` and list it as an extra `<source>`.
+
 ## Embedding a Spline 3D model
 
 Set the scene URL on the stage container in `index.html`:
