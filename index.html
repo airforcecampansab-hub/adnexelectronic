@@ -481,6 +481,52 @@
     </div>
   </section>
 
+
+  <!-- ================= FEATURED PRODUCT SHOWCASE ================= -->
+  <!--
+    Split showcase: looping CGI commercial on the left, glassmorphism
+    spec card on the right. Drop the video in as
+    assets/cherry-vanilla-sundae.mp4 and it auto-upgrades on load;
+    until then it loops assets/hero-reel.mp4 as a fallback.
+  -->
+  <section class="featured section" id="featured">
+    <div class="featured__grid">
+
+      <!-- LEFT — CGI commercial -->
+      <figure class="featured__stage reveal">
+        <video class="featured__video" id="sundaeVideo" autoplay muted loop playsinline preload="auto"
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Crect width='4' height='5' fill='%230a0a0f'/%3E%3C/svg%3E">
+          <source src="assets/hero-reel.mp4" type="video/mp4" />
+        </video>
+        <span class="featured__badge" aria-hidden="true">● CGI Showcase</span>
+      </figure>
+
+      <!-- RIGHT — Apple-style glassmorphism card -->
+      <aside class="glasscard reveal" aria-label="Cherry Vanilla Sundae details">
+        <p class="glasscard__eyebrow">Featured Creation</p>
+        <h3 class="glasscard__title">Cherry Vanilla<br />Sundae</h3>
+        <p class="glasscard__lead">Vanilla soft serve, glossy cherry sauce and fresh fruit, layered and finished in crystal glass.</p>
+
+        <ul class="glasscard__ings">
+          <li class="ing" style="--i:0"><span class="ing__ic">🍦</span><span>Vanilla Soft Serve</span></li>
+          <li class="ing" style="--i:1"><span class="ing__ic">🍒</span><span>Cherry Sauce</span></li>
+          <li class="ing" style="--i:2"><span class="ing__ic">🍓</span><span>Strawberry</span></li>
+          <li class="ing" style="--i:3"><span class="ing__ic">🫐</span><span>Blueberry</span></li>
+          <li class="ing" style="--i:4"><span class="ing__ic">🍊</span><span>Orange</span></li>
+          <li class="ing" style="--i:5"><span class="ing__ic">🍒</span><span>Cherry</span></li>
+          <li class="ing" style="--i:6"><span class="ing__ic">🍪</span><span>Cookie Crumble</span></li>
+          <li class="ing" style="--i:7"><span class="ing__ic">🧇</span><span>Wafer Stick</span></li>
+        </ul>
+
+        <div class="glasscard__foot">
+          <div class="glasscard__price"><span class="glasscard__cur">$</span>6.90</div>
+          <a class="btn btn--gold glasscard__cta" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
   <!-- ================= 3D EXPERIENCE ================= -->
   <section class="spline section" id="experience">
     <div class="spline__grid">

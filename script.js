@@ -6,14 +6,15 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
-/* ---------- hero video: auto-upgrade to the Black Forest commercial ----------
-   Plays assets/hero-reel.mp4 by default. If assets/hero-black-forest.mp4 has
-   been added, swap to it seamlessly once it's confirmed present — the site is
-   never left with a broken/blank hero if the file isn't there yet. */
-(function upgradeHeroVideo() {
-  const video = document.getElementById("heroVideo");
+/* ---------- video auto-upgrade ----------
+   Each player ships a working fallback source. If the preferred commercial
+   file has been dropped into /assets, swap to it seamlessly once confirmed
+   present — the site is never left with a broken/blank player if it isn't
+   there yet. Used for the hero (Black Forest) and the featured CGI showcase
+   (Cherry Vanilla Sundae). */
+function upgradeVideo(id, preferred) {
+  const video = document.getElementById(id);
   if (!video) return;
-  const preferred = "assets/hero-black-forest.mp4";
   fetch(preferred, { method: "HEAD" })
     .then((res) => {
       if (!res.ok) return;
@@ -24,7 +25,9 @@ const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
       video.play().catch(() => {});
     })
     .catch(() => {});
-})();
+}
+upgradeVideo("heroVideo", "assets/hero-black-forest.mp4");
+upgradeVideo("sundaeVideo", "assets/cherry-vanilla-sundae.mp4");
 
 /* ---------- sticky nav ---------- */
 const nav = document.getElementById("nav");

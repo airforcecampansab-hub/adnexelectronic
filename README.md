@@ -37,6 +37,18 @@ no code change needed. Until it exists, the hero plays `assets/hero-reel.mp4`
 as a fallback, so the site is never left with a blank hero. For best
 compression you can also add a `.webm` and list it as an extra `<source>`.
 
+## Featured showcase video (Cherry Vanilla Sundae)
+
+The Featured section pairs a looping CGI commercial (left) with an
+Apple-style glassmorphism spec card (right). Drop your CGI file in as:
+
+```
+assets/cherry-vanilla-sundae.mp4   (muted, H.264/AAC MP4, faststart)
+```
+
+Same auto-upgrade mechanism as the hero — it swaps in on load when present,
+and falls back to `assets/hero-reel.mp4` until then.
+
 ## Embedding a Spline 3D model
 
 Set the scene URL on the stage container in `index.html`:
