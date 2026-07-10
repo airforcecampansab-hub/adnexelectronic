@@ -98,114 +98,156 @@ if (menuCount) {
   menuCount.textContent = `${cards.length} treats on display`;
 }
 
-/* ---------- hero: cinematic scroll-driven video slider ---------- */
-// One virtual position drives everything: the idle auto-cycle tweens it
-// forward while the page rests at the top, and scrolling through the
-// hero runway scrubs it directly, wiping each reel into the next.
-const heroEl = document.querySelector(".hero--slider");
-if (heroEl) {
-  const slides = [...heroEl.querySelectorAll(".hero-slide")];
-  const dots = [...heroEl.querySelectorAll(".hero__dots span")];
-  const heroTitle = document.getElementById("heroTitle");
-  const heroTitles = [
-    "Berry <span>Good Vibes</span>",
-    "Berry Berry <span>Delicious</span>",
-    "Nutty <span>Pista Delight</span>",
-  ];
-  const N = slides.length;
+/* ---------- hero: cinematic product commercials ---------- */
+// Each act performs the 10-second sequence from the campaign spots:
+//   0.00-0.08  exploded view — ingredients separate vertically
+//   0.08-0.20  suspended hero shot with sparkle particles
+//   0.20-0.34  ingredients fly back and reconstruct the dessert
+//   0.34-0.44  beauty shot
+//   0.44-0.52  the dessert glides left; light particles sweep right
+//   0.52-0.94  glassmorphism card and ingredient rows stagger in
+//   0.94-1.00  crossfade to the next act
+// One master position drives it all: it plays in real time (10s per act)
+// while the page rests at the top, and scroll scrubs it directly.
+const cine = document.querySelector(".hero--cine");
+if (cine) {
+  const acts = [...cine.querySelectorAll(".cine-act")].map((act) => ({
+    act,
+    dessert: act.querySelector(".cine-act__dessert"),
+    shadow: act.querySelector(".cine-act__shadow"),
+    orbs: [...act.querySelectorAll(".cine-act__orb")],
+    card: act.querySelector(".cine-act__card"),
+    line: act.querySelector(".cine-act__line"),
+    rows: [
+      ...act.querySelectorAll(".cine-act__list li"),
+      act.querySelector(".cine-act__price"),
+      act.querySelector(".cine-act__cta"),
+    ],
+  }));
+  const dots = [...cine.querySelectorAll(".hero__dots span")];
+  const N = acts.length;
+  const narrow = window.matchMedia("(max-width: 760px)");
 
   if (prefersReducedMotion) {
-    slides[0].style.visibility = "visible";
+    cine.classList.add("is-static");
   } else {
-    // Lazy-load the reels after everything else; a missing file simply
-    // leaves the poster photo in place.
-    window.addEventListener("load", () => {
-      slides.forEach((slide) => {
-        const src = slide.dataset.video;
-        if (!src) return;
-        const v = document.createElement("video");
-        v.muted = true;
-        v.loop = true;
-        v.playsInline = true;
-        v.preload = "metadata";
-        v.src = src;
-        v.addEventListener("loadeddata", () => {
-          slide.appendChild(v);
-          requestAnimationFrame(() => v.classList.add("is-ready"));
-          v.play().catch(() => {});
-        });
-        v.addEventListener("error", () => v.remove());
+    const sparkleLayer = document.getElementById("cineSparkles");
+    const sparkles = [];
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("i");
+      s.textContent = "\u2726";
+      s.style.left = `${18 + Math.random() * 64}%`;
+      s.style.top = `${16 + Math.random() * 58}%`;
+      s.style.fontSize = `${6 + Math.random() * 10}px`;
+      sparkleLayer.appendChild(s);
+      sparkles.push({ el: s, drift: Math.random() * 2 - 1 });
+    }
+
+    const seg = (u, a, b) => clamp((u - a) / (b - a), 0, 1);
+    const outCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const inOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const orbSpots = [
+      [0, -0.68],
+      [0, 0.66],
+      [0, 0.95],
+    ];
+    const eyebrow = cine.querySelector(".cine__eyebrow");
+
+    const applyAct = (p, u, fade) => {
+      p.act.style.opacity = fade;
+      p.act.style.visibility = fade > 0.001 ? "visible" : "hidden";
+      if (fade <= 0.001) return;
+
+      const isN = narrow.matches;
+      const explode = outCubic(seg(u, 0, 0.08));
+      const rebuild = inOut(seg(u, 0.2, 0.34));
+      const apart = explode * (1 - rebuild); // how separated the dessert is
+      const beauty = inOut(seg(u, 0.34, 0.44));
+      const glide = inOut(seg(u, 0.44, 0.52));
+
+      const gx = isN ? 0 : -0.24 * window.innerWidth * glide;
+      const gy = isN ? -0.14 * window.innerHeight * glide : 0;
+      const scale = 1 - 0.08 * apart + 0.035 * beauty - (isN ? 0.32 : 0.1) * glide;
+      p.dessert.style.transform =
+        `translate(calc(-50% + ${gx}px), calc(-50% + ${gy}px)) scale(${scale})`;
+      p.shadow.style.transform = `translateX(${gx}px) scale(${1 - 0.2 * apart - 0.15 * glide})`;
+      p.shadow.style.opacity = (0.5 + 0.25 * apart) * (1 - 0.5 * glide);
+
+      if (eyebrow) eyebrow.style.opacity = 1 - apart; // clear the exploded column
+
+      const D = p.dessert.offsetWidth;
+      p.orbs.forEach((orb, k) => {
+        const [ox, oy] = orbSpots[k];
+        const bob = Math.sin(u * 50 + k * 2.1) * 6 * apart;
+        const x = ox * D * apart;
+        const y = oy * D * apart + bob;
+        orb.style.transform =
+          `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${0.25 + 0.75 * apart})`;
+        orb.style.opacity = apart;
       });
-    });
 
-    let basePos = 0; // whole slides advanced by the idle auto-cycle
-    let tweenFrom = 0, tweenStart = 0, tweening = false;
-    const TWEEN_MS = 1500;
-    let lastShown = 0;
+      const cardIn = inOut(seg(u, 0.52, 0.64));
+      p.card.style.opacity = cardIn;
+      p.card.style.pointerEvents = cardIn > 0.5 ? "auto" : "none";
+      p.card.style.transform = isN
+        ? `translateY(${(1 - cardIn) * 70}px)`
+        : `translateY(-50%) translateX(${(1 - cardIn) * 80}px)`;
+      p.line.style.transform = `scaleX(${inOut(seg(u, 0.58, 0.7))})`;
+      p.rows.forEach((row, k) => {
+        if (!row) return;
+        const rv = seg(u, 0.6 + k * 0.05, 0.7 + k * 0.05);
+        row.style.opacity = rv;
+        row.style.transform = `translateY(${(1 - outCubic(rv)) * 14}px)`;
+      });
 
-    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    const smooth = (t) => t * t * (3 - 2 * t);
+      // sparkles: glow during the suspended shot, sweep right during the glide
+      const hold = seg(u, 0.06, 0.12) * (1 - seg(u, 0.18, 0.3));
+      const sweep = seg(u, 0.44, 0.5) * (1 - seg(u, 0.56, 0.68));
+      const glow = Math.max(hold * 0.8, sweep);
+      sparkles.forEach((sp, k) => {
+        const tw = 0.5 + 0.5 * Math.sin(u * 90 + k * 1.7);
+        sp.el.style.opacity = glow * tw * fade;
+        sp.el.style.transform =
+          `translateX(${sweep * 0.18 * window.innerWidth * (0.4 + sp.drift)}px) scale(${0.6 + tw * 0.6})`;
+      });
+    };
 
     const scrollPos = () => {
-      const rect = heroEl.getBoundingClientRect();
-      const runway = heroEl.offsetHeight - window.innerHeight;
-      return runway > 0 ? clamp(-rect.top / runway, 0, 1) * (N - 1) : 0;
+      const rect = cine.getBoundingClientRect();
+      const runway = cine.offsetHeight - window.innerHeight;
+      // stop just shy of N so the last act exits the hero on its card
+      return runway > 0 ? clamp(-rect.top / runway, 0, 1) * (N - 0.06) : 0;
     };
 
-    const renderHero = (now) => {
-      let pos = basePos;
-      if (tweening) {
-        const t = clamp((now - tweenStart) / TWEEN_MS, 0, 1);
-        pos = tweenFrom + easeInOut(t);
-        if (t >= 1) {
-          tweening = false;
-          basePos = Math.round(pos) % N;
-          pos = basePos;
-        }
-      }
-      pos = (pos + scrollPos()) % N;
-      const idx = Math.floor(pos) % N;
-      const frac = smooth(pos - Math.floor(pos));
-      const next = (idx + 1) % N;
+    let basePos = 0;
+    let lastT = performance.now();
+    let lastDot = -1;
 
-      slides.forEach((slide, i) => {
-        if (i === idx) {
-          slide.style.visibility = "visible";
-          slide.style.zIndex = 1;
-          slide.style.clipPath = "none";
-        } else if (i === next && frac > 0.001) {
-          slide.style.visibility = "visible";
-          slide.style.zIndex = 2;
-          slide.style.clipPath = `inset(0 0 0 ${(1 - frac) * 100}%)`;
-        } else {
-          slide.style.visibility = "hidden";
-          slide.style.zIndex = 0;
-        }
+    const render = (now) => {
+      const dt = Math.min((now - lastT) / 1000, 0.05);
+      lastT = now;
+      const sp = scrollPos();
+      if (sp === 0 && document.visibilityState === "visible") {
+        basePos = (basePos + dt / 10) % N; // 10s per act, as scripted
+      }
+      const P = (basePos + sp) % N;
+      const idx = Math.floor(P);
+      const u = P - idx;
+      const cross = inOut(seg(u, 0.94, 1));
+
+      acts.forEach((p, i) => {
+        if (i === idx) applyAct(p, u, 1 - cross);
+        else if (i === (idx + 1) % N) applyAct(p, 0, cross);
+        else applyAct(p, 0, 0);
       });
 
-      const shown = frac > 0.5 ? next : idx;
-      if (shown !== lastShown) {
-        lastShown = shown;
-        dots.forEach((d, i) => d.classList.toggle("is-active", i === shown));
-        if (heroTitle) {
-          heroTitle.classList.add("is-swapping");
-          setTimeout(() => {
-            heroTitle.innerHTML = heroTitles[shown] || "";
-            heroTitle.classList.remove("is-swapping");
-          }, 240);
-        }
+      if (idx !== lastDot) {
+        lastDot = idx;
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === idx));
       }
-      requestAnimationFrame(renderHero);
+      requestAnimationFrame(render);
     };
-    requestAnimationFrame(renderHero);
-
-    setInterval(() => {
-      if (!tweening && scrollPos() === 0 && document.visibilityState === "visible") {
-        tweenFrom = basePos;
-        tweenStart = performance.now();
-        tweening = true;
-      }
-    }, 7000);
+    requestAnimationFrame(render);
   }
 }
 

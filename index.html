@@ -33,35 +33,88 @@
     </div>
   </header>
 
-  <!-- ================= HERO (cinematic scroll-driven slider) =================
-       Drop the three AI showcase reels into assets/ as:
-         hero-strawberry.mp4 · hero-blueberry.mp4 · hero-pista.mp4
-       Each slide plays its reel once the file exists; until then the
-       matching product photo stands in as the cinematic poster. -->
-  <section class="hero hero--slider" id="top">
+  <!-- ================= HERO (cinematic scroll-performed commercials) =================
+       Each act performs one 10s product commercial: exploded view →
+       suspended hero shot → reconstruction → glide left → glass info card.
+       Idle at the top of the page the timeline plays itself in real time;
+       scrolling scrubs the same timeline. Ingredient orbs are focal-point
+       crops carved from the same campaign poster as the dessert. -->
+  <section class="hero hero--cine" id="top">
     <div class="hero__sticky">
-      <div class="hero__slides" id="heroSlides">
-        <figure class="hero-slide" data-video="assets/hero-strawberry.mp4">
-          <img src="assets/strawberry-bowl.jpeg" alt="Strawberry ice cream scoops in a glass bowl with fresh strawberries and mint" />
-        </figure>
-        <figure class="hero-slide" data-video="assets/hero-blueberry.mp4">
-          <img src="assets/berry-cup.jpeg" alt="Rich purple blueberry ice cream swirl with frosted blueberries" loading="lazy" />
-        </figure>
-        <figure class="hero-slide" data-video="assets/hero-pista.mp4">
-          <img src="assets/pista-bowl.jpeg" alt="Creamy pistachio ice cream scoops topped with roasted pistachios" loading="lazy" />
-        </figure>
+      <div class="cine__bg" aria-hidden="true"></div>
+
+      <div class="cine__acts">
+        <article class="cine-act" aria-label="Berry Good Vibes — strawberry ice cream">
+          <div class="cine-act__tint" style="--tint: rgba(229, 105, 127, 0.16)" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/strawberry-bowl.jpeg" style="transform-origin: 50% 66%; --crop: 2.3" alt="Strawberry ice cream scoops in a glass bowl" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 28% 46%; --crop: 5" alt="" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 67% 49%; --crop: 5" alt="" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 62% 73%; --crop: 4.5" alt="" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Berry Good Vibes</h2>
+            <ul class="cine-act__list">
+              <li>Creamy Strawberry Ice Cream</li>
+              <li>Fresh Strawberry Pieces</li>
+              <li>Signature Berry Blend</li>
+              <li>Fresh Mint Leaves</li>
+            </ul>
+            <p class="cine-act__price">₹139 <small>Strawberry Season Bowl</small></p>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
+
+        <article class="cine-act" aria-label="Berry Berry Delicious — blueberry ice cream">
+          <div class="cine-act__tint" style="--tint: rgba(146, 92, 178, 0.17)" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/berry-cup.jpeg" style="transform-origin: 50% 62%; --crop: 2.4" alt="Rich purple blueberry ice cream swirl in a cup" loading="lazy" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 72% 74%; --crop: 5" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 26% 76%; --crop: 3.4" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 58% 82%; --crop: 3.2" alt="" loading="lazy" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Berry Berry Delicious</h2>
+            <ul class="cine-act__list">
+              <li>Rich Blueberry Creamy Scoops</li>
+              <li>Fresh Whole Blueberries</li>
+              <li>Signature Berry Infusion</li>
+            </ul>
+            <p class="cine-act__price">₹139 <small>Berry Berry Scoop</small></p>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
+
+        <article class="cine-act" aria-label="Nutty Pista Delight — pistachio ice cream">
+          <div class="cine-act__tint" style="--tint: rgba(151, 162, 92, 0.16)" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/pista-bowl.jpeg" style="transform-origin: 50% 64%; --crop: 2.4" alt="Creamy pistachio ice cream scoops in a speckled bowl" loading="lazy" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 7% 50%; --crop: 3.4" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 30% 68%; --crop: 3.4" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 52% 74%; --crop: 3.2" alt="" loading="lazy" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Nutty Pista Delight</h2>
+            <ul class="cine-act__list">
+              <li>Creamy Pistachio Scoops</li>
+              <li>Premium Roasted Pistachios</li>
+              <li>Signature Nutty Blend</li>
+            </ul>
+            <p class="cine-act__price">₹139 <small>Nutty Pista Delight</small></p>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
       </div>
-      <div class="hero__veil"></div>
-      <div class="hero__content">
-        <p class="hero__eyebrow reveal">Iceberg — Premium Desserts</p>
-        <h1 class="hero__title reveal" id="heroTitle">Berry <span>Good Vibes</span></h1>
-        <p class="hero__sub reveal">Handcrafted faloodas, towering sundaes and celebration cakes —
-          layered, drizzled and finished like nowhere else. Tastes as good as it looks.</p>
-        <div class="hero__actions reveal">
-          <a href="#menu" class="btn btn--gold">Explore the Menu</a>
-          <a href="#story" class="btn btn--ghost">Our Story</a>
-        </div>
-      </div>
+
+      <div class="cine__sparkles" id="cineSparkles" aria-hidden="true"></div>
+
+      <p class="hero__eyebrow cine__eyebrow">Iceberg — Premium Desserts</p>
       <div class="hero__dots" id="heroDots" aria-hidden="true">
         <span class="is-active"></span><span></span><span></span>
       </div>
