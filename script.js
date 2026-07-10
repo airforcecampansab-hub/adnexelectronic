@@ -121,12 +121,14 @@ if (showcase && track) {
       track.style.transform = `translate3d(${currentX}px, 0, 0)`;
 
       const center = window.innerWidth / 2;
+      const easeOut = (t) => 1 - Math.pow(1 - t, 3); // cubic easeOut
       items.forEach((item) => {
         const r = item.getBoundingClientRect();
         const dist = Math.abs(r.left + r.width / 2 - center);
-        // 1.12 at dead center, easing down to 0.86 at the far edges
-        const scale = clamp(1.12 - (dist / center) * 0.3, 0.86, 1.12);
-        const fade = clamp(1.05 - (dist / center) * 0.45, 0.55, 1);
+        // proximity: 1 at dead center → 0 at the far edge, shaped with easeOut
+        const proximity = easeOut(clamp(1 - dist / center, 0, 1));
+        const scale = 0.84 + proximity * 0.3; // 0.84 at edges → 1.14 at center
+        const fade = 0.5 + proximity * 0.5; // 0.5 → 1
         item.style.transform = `scale(${scale})`;
         item.style.opacity = fade;
         item.classList.toggle("is-center", dist < r.width * 0.55);
