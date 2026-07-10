@@ -29,25 +29,74 @@ links.querySelectorAll("a").forEach((a) =>
 );
 
 /* ---------- menu filter tabs ---------- */
+// Cards can belong to several categories via space-separated tokens,
+// e.g. data-category="falooda signature".
 const tabs = document.querySelectorAll(".menu__tab");
 const cards = document.querySelectorAll(".card[data-category]");
+const menuHeading = document.getElementById("menuHeading");
+const menuCount = document.getElementById("menuCount");
+
+const headings = {
+  all: "Everything on the Counter",
+  pastry: "Pastries",
+  cake: "Cakes & Wedding Cakes",
+  icecream: "Ice Cream",
+  falooda: "Faloodas",
+  signature: "Signature Treats",
+  sundae: "Sundaes",
+  shake: "Shakes",
+};
+
+const updateHeader = (filter, shown) => {
+  if (!menuHeading || !menuCount) return;
+  menuHeading.classList.add("is-swapping");
+  menuCount.classList.add("is-swapping");
+  setTimeout(() => {
+    menuHeading.textContent = headings[filter] || filter;
+    menuCount.textContent = `${shown} ${shown === 1 ? "treat" : "treats"} on display`;
+    menuHeading.classList.remove("is-swapping");
+    menuCount.classList.remove("is-swapping");
+  }, 180);
+};
+
+const applyFilter = (filter) => {
+  let shown = 0;
+  cards.forEach((card) => {
+    const show = filter === "all" || card.dataset.category.split(" ").includes(filter);
+    card.classList.toggle("is-hidden", !show);
+    if (show) {
+      card.style.transitionDelay = `${Math.min(shown * 45, 400)}ms`;
+      shown += 1;
+      card.classList.remove("is-visible");
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => card.classList.add("is-visible"))
+      );
+      card.addEventListener(
+        "transitionend",
+        () => (card.style.transitionDelay = ""),
+        { once: true }
+      );
+    } else {
+      card.style.transitionDelay = "";
+    }
+  });
+  updateHeader(filter, shown);
+};
+
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    tabs.forEach((t) => t.classList.remove("is-active"));
-    tab.classList.add("is-active");
-    const filter = tab.dataset.filter;
-    cards.forEach((card) => {
-      const show = filter === "all" || card.dataset.category === filter;
-      card.classList.toggle("is-hidden", !show);
-      if (show) {
-        card.classList.remove("is-visible");
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => card.classList.add("is-visible"))
-        );
-      }
+    tabs.forEach((t) => {
+      t.classList.remove("is-active");
+      t.setAttribute("aria-selected", "false");
     });
+    tab.classList.add("is-active");
+    tab.setAttribute("aria-selected", "true");
+    applyFilter(tab.dataset.filter);
   });
 });
+if (menuCount) {
+  menuCount.textContent = `${cards.length} treats on display`;
+}
 
 /* ---------- reveal on scroll ---------- */
 const revealables = document.querySelectorAll(".reveal");

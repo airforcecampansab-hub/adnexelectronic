@@ -109,20 +109,30 @@
   <section class="menu section" id="menu">
     <div class="section__head reveal">
       <p class="section__eyebrow">The Menu</p>
-      <h2 class="section__title">Signature Treats</h2>
+      <h2 class="section__title">Choose Your Craving</h2>
       <p class="section__sub">Every glass built layer by layer. Every cake baked to order.</p>
     </div>
 
     <div class="menu__tabs reveal" role="tablist">
       <button class="menu__tab is-active" data-filter="all" role="tab">All</button>
-      <button class="menu__tab" data-filter="icecream" role="tab">Icecreams &amp; Faloodas</button>
-      <button class="menu__tab" data-filter="cake" role="tab">Cakes &amp; Pastries</button>
+      <button class="menu__tab" data-filter="pastry" role="tab">Pastries</button>
+      <button class="menu__tab" data-filter="cake" role="tab">Cakes &amp; Wedding Cakes</button>
+      <button class="menu__tab" data-filter="icecream" role="tab">Ice Cream</button>
+      <button class="menu__tab" data-filter="falooda" role="tab">Faloodas</button>
+      <button class="menu__tab" data-filter="signature" role="tab">Signature Treats</button>
+      <button class="menu__tab" data-filter="sundae" role="tab">Sundaes</button>
+      <button class="menu__tab" data-filter="shake" role="tab">Shakes</button>
+    </div>
+
+    <div class="menu__header reveal" aria-live="polite">
+      <h3 class="menu__heading" id="menuHeading">Everything on the Counter</h3>
+      <p class="menu__count" id="menuCount"></p>
     </div>
 
     <div class="menu__grid" id="menuGrid">
 
       <!-- Icecreams & Faloodas -->
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="falooda signature">
         <div class="card__media">
           <img class="pos-l" src="assets/falooda-royal.jpeg" alt="Royal Dry Fruit Falooda topped with honey-glazed nuts" loading="lazy" />
           <span class="card__badge">Bestseller</span>
@@ -137,7 +147,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="icecream signature">
         <div class="card__media">
           <img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista Almond Tower with wafer and dripping pistachio cream" loading="lazy" />
           <span class="card__badge card__badge--new">New</span>
@@ -152,7 +162,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="falooda">
         <div class="card__media">
           <img class="pos-c" src="assets/falooda-classic.jpeg" alt="Classic Rich Creamy Falooda with paper umbrella and wafers" loading="lazy" />
         </div>
@@ -166,7 +176,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="sundae signature">
         <div class="card__media">
           <img class="pos-far-r" src="assets/sundae-special.jpeg" alt="After-Lunch Sundae Special with mango layers and rose base" loading="lazy" />
         </div>
@@ -208,7 +218,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="sundae">
         <div class="card__media">
           <img class="pos-c" src="assets/cherry-sundae.jpeg" alt="Fresh icecream sundae with berry ripple and a cherry on top" loading="lazy" />
         </div>
@@ -264,7 +274,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="shake">
         <div class="card__media">
           <img class="pos-l" src="assets/shakes-trio.jpeg" alt="Butterscotch milkshake topped with praline crumble" loading="lazy" />
         </div>
@@ -293,7 +303,7 @@
       </article>
 
       <!-- Cakes & Pastries -->
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="cake signature">
         <div class="card__media">
           <img class="img-deep" src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" />
         </div>
@@ -322,7 +332,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media">
           <img class="img-bottom" src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl topped with cream and nuts" loading="lazy" />
         </div>
@@ -351,7 +361,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media card__media--art card__media--cupcake">
           <span class="card__art-glyph">✦</span>
           <span class="card__art-label">Petite Bakes</span>
@@ -366,7 +376,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media">
           <img class="img-bottom" src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" />
         </div>
@@ -380,7 +390,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="cake signature">
         <div class="card__media">
           <img class="pos-c" src="assets/choco-special.jpeg" alt="Special chocolate cake with dipped strawberries and ganache drip" loading="lazy" />
         </div>
