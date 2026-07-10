@@ -33,23 +33,80 @@
     </div>
   </header>
 
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="top">
-    <video class="hero__video" autoplay muted loop playsinline poster="assets/falooda-royal.jpeg">
-      <source src="assets/hero-reel.mp4" type="video/mp4" />
-    </video>
-    <div class="hero__veil"></div>
-    <div class="hero__content">
-      <p class="hero__eyebrow reveal">House of Icecreams &amp; Pastries</p>
-      <h1 class="hero__title reveal">Dive Into the<br /><span>Creamiest</span> Adventure</h1>
-      <p class="hero__sub reveal">Handcrafted faloodas, towering sundaes and celebration cakes —
-        layered, drizzled and finished like nowhere else. Tastes as good as it looks.</p>
-      <div class="hero__actions reveal">
-        <a href="#menu" class="btn btn--gold">Explore the Menu</a>
-        <a href="#story" class="btn btn--ghost">Our Story</a>
+  <!-- ================= HERO (cinematic scroll-performed commercials) =================
+       Each act performs one 10s product commercial: exploded view →
+       suspended hero shot → reconstruction → glide left → glass info card.
+       Idle at the top of the page the timeline plays itself in real time;
+       scrolling scrubs the same timeline. Ingredient orbs are focal-point
+       crops carved from the same campaign poster as the dessert.
+       Drop the CGI reels into assets/ as strawberry.mp4, blueberry.mp4 and
+       pista.mp4: on desktop each act then plays its reel full-bleed (idle)
+       and scrubs it by scroll; phones and reduced-data connections keep the
+       lightweight poster-crop animation as the fallback. -->
+  <section class="hero hero--cine" id="top">
+    <div class="hero__sticky">
+      <div class="cine__bg" aria-hidden="true"></div>
+
+      <div class="cine__acts">
+        <article class="cine-act" data-video="assets/pista.mp4" style="--stage: #232816; --tint: rgba(151, 162, 92, 0.32)" aria-label="Nutty Pista Delight — pistachio ice cream">
+          <div class="cine-act__tint" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/pista-bowl.jpeg" style="transform-origin: 50% 64%; --crop: 2.4" alt="Creamy pistachio ice cream scoops in a rustic bowl" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 76% 70%; --crop: 5" alt="" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 30% 68%; --crop: 3.4" alt="" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 52% 74%; --crop: 3.2" alt="" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Nutty Pista Delight</h2>
+            <p class="cine-act__desc">Every spoonful promises a nutty delight that will transport you to a world of flavor.</p>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
+
+        <article class="cine-act" data-video="assets/blueberry.mp4" style="--stage: #1d1022; --tint: rgba(146, 92, 178, 0.3)" aria-label="Berry Berry Delicious — blueberry ice cream">
+          <div class="cine-act__tint" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/berry-cup.jpeg" style="transform-origin: 50% 62%; --crop: 2.4" alt="Rich purple blueberry ice cream swirl in a white cup" loading="lazy" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 72% 74%; --crop: 5" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 26% 76%; --crop: 3.4" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 58% 82%; --crop: 3.2" alt="" loading="lazy" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Berry Berry Delicious</h2>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
+
+        <article class="cine-act" data-video="assets/strawberry.mp4" style="--stage: #2b171b; --tint: rgba(229, 105, 127, 0.3)" aria-label="Berry Good Vibes — strawberry ice cream">
+          <div class="cine-act__tint" aria-hidden="true"></div>
+          <span class="cine-act__shadow" aria-hidden="true"></span>
+          <div class="cine-act__dessert">
+            <img src="assets/strawberry-bowl.jpeg" style="transform-origin: 50% 66%; --crop: 2.3" alt="Creamy strawberry ice cream in a clear glass bowl with fresh strawberries" loading="lazy" />
+          </div>
+          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 28% 46%; --crop: 5" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 67% 49%; --crop: 5" alt="" loading="lazy" /></span>
+          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 62% 73%; --crop: 4.5" alt="" loading="lazy" /></span>
+          <aside class="cine-act__card">
+            <span class="cine-act__line" aria-hidden="true"></span>
+            <h2 class="cine-act__title">Berry Good Vibes</h2>
+            <p class="cine-act__desc">Scoop up the joy of strawberry season with our creamy, dreamy delight!</p>
+            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
+          </aside>
+        </article>
       </div>
+
+      <div class="cine__sparkles" id="cineSparkles" aria-hidden="true"></div>
+
+      <p class="hero__eyebrow cine__eyebrow">Iceberg — Premium Desserts</p>
+      <div class="hero__dots" id="heroDots" aria-hidden="true">
+        <span class="is-active"></span><span></span><span></span>
+      </div>
+      <div class="hero__scroll" aria-hidden="true"><span></span></div>
     </div>
-    <div class="hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
   <!-- ================= MARQUEE ================= -->
@@ -109,20 +166,30 @@
   <section class="menu section" id="menu">
     <div class="section__head reveal">
       <p class="section__eyebrow">The Menu</p>
-      <h2 class="section__title">Signature Treats</h2>
+      <h2 class="section__title">Choose Your Craving</h2>
       <p class="section__sub">Every glass built layer by layer. Every cake baked to order.</p>
     </div>
 
     <div class="menu__tabs reveal" role="tablist">
       <button class="menu__tab is-active" data-filter="all" role="tab">All</button>
-      <button class="menu__tab" data-filter="icecream" role="tab">Icecreams &amp; Faloodas</button>
-      <button class="menu__tab" data-filter="cake" role="tab">Cakes &amp; Pastries</button>
+      <button class="menu__tab" data-filter="pastry" role="tab">Pastries</button>
+      <button class="menu__tab" data-filter="cake" role="tab">Cakes &amp; Wedding Cakes</button>
+      <button class="menu__tab" data-filter="icecream" role="tab">Ice Cream</button>
+      <button class="menu__tab" data-filter="falooda" role="tab">Faloodas</button>
+      <button class="menu__tab" data-filter="signature" role="tab">Signature Treats</button>
+      <button class="menu__tab" data-filter="sundae" role="tab">Sundaes</button>
+      <button class="menu__tab" data-filter="shake" role="tab">Shakes</button>
+    </div>
+
+    <div class="menu__header reveal" aria-live="polite">
+      <h3 class="menu__heading" id="menuHeading">Everything on the Counter</h3>
+      <p class="menu__count" id="menuCount"></p>
     </div>
 
     <div class="menu__grid" id="menuGrid">
 
       <!-- Icecreams & Faloodas -->
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="falooda signature">
         <div class="card__media">
           <img class="pos-l" src="assets/falooda-royal.jpeg" alt="Royal Dry Fruit Falooda topped with honey-glazed nuts" loading="lazy" />
           <span class="card__badge">Bestseller</span>
@@ -137,7 +204,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="icecream signature">
         <div class="card__media">
           <img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista Almond Tower with wafer and dripping pistachio cream" loading="lazy" />
           <span class="card__badge card__badge--new">New</span>
@@ -152,7 +219,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="falooda">
         <div class="card__media">
           <img class="pos-c" src="assets/falooda-classic.jpeg" alt="Classic Rich Creamy Falooda with paper umbrella and wafers" loading="lazy" />
         </div>
@@ -166,7 +233,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="sundae signature">
         <div class="card__media">
           <img class="pos-far-r" src="assets/sundae-special.jpeg" alt="After-Lunch Sundae Special with mango layers and rose base" loading="lazy" />
         </div>
@@ -208,7 +275,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="sundae">
         <div class="card__media">
           <img class="pos-c" src="assets/cherry-sundae.jpeg" alt="Fresh icecream sundae with berry ripple and a cherry on top" loading="lazy" />
         </div>
@@ -264,7 +331,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="icecream">
+      <article class="card reveal" data-category="shake">
         <div class="card__media">
           <img class="pos-l" src="assets/shakes-trio.jpeg" alt="Butterscotch milkshake topped with praline crumble" loading="lazy" />
         </div>
@@ -278,8 +345,22 @@
         </div>
       </article>
 
+      <article class="card reveal" data-category="icecream">
+        <div class="card__media">
+          <img class="pos-cone" src="assets/dipped-cone.jpeg" alt="Choco-dipped waffle cone with vanilla scoops" loading="lazy" />
+        </div>
+        <div class="card__body">
+          <div class="card__row">
+            <h3 class="card__name">Choco-Dipped Cone</h3>
+            <span class="card__price">₹89</span>
+          </div>
+          <p class="card__desc">Double vanilla scoops over a chocolate-dipped waffle cone — celebrate every bite.</p>
+          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
+        </div>
+      </article>
+
       <!-- Cakes & Pastries -->
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="cake signature">
         <div class="card__media">
           <img class="img-deep" src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" />
         </div>
@@ -308,7 +389,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media">
           <img class="img-bottom" src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl topped with cream and nuts" loading="lazy" />
         </div>
@@ -337,7 +418,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media card__media--art card__media--cupcake">
           <span class="card__art-glyph">✦</span>
           <span class="card__art-label">Petite Bakes</span>
@@ -352,7 +433,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="pastry">
         <div class="card__media">
           <img class="img-bottom" src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" />
         </div>
@@ -366,7 +447,7 @@
         </div>
       </article>
 
-      <article class="card reveal" data-category="cake">
+      <article class="card reveal" data-category="cake signature">
         <div class="card__media">
           <img class="pos-c" src="assets/choco-special.jpeg" alt="Special chocolate cake with dipped strawberries and ganache drip" loading="lazy" />
         </div>
@@ -409,12 +490,12 @@
         <div class="tilt" id="tiltScene" aria-label="Interactive 3D falooda preview">
           <div class="tilt__glow" aria-hidden="true"></div>
           <div class="tilt__card">
-            <img class="pos-l" src="assets/falooda-royal.jpeg" alt="Royal falooda in 3D preview" />
+            <img class="pos-far-r" src="assets/scoops-happiness.jpeg" alt="Waffle basket sundae with triple scoops in 3D preview" />
             <div class="tilt__shine" aria-hidden="true"></div>
           </div>
-          <span class="tilt__chip tilt__chip--a">Malai scoop</span>
-          <span class="tilt__chip tilt__chip--b">Basil seeds</span>
-          <span class="tilt__chip tilt__chip--c">Honey nuts</span>
+          <span class="tilt__chip tilt__chip--a">Triple scoops</span>
+          <span class="tilt__chip tilt__chip--b">Choco drizzle</span>
+          <span class="tilt__chip tilt__chip--c">Waffle basket</span>
           <span class="tilt__ring" aria-hidden="true"></span>
         </div>
       </div>
@@ -447,26 +528,94 @@
     </div>
   </section>
 
-  <!-- ================= GALLERY ================= -->
-  <section class="gallery section" id="gallery">
-    <div class="section__head reveal">
-      <p class="section__eyebrow">Gallery</p>
-      <h2 class="section__title">Tastes as Good as It Looks</h2>
-    </div>
-    <div class="gallery__grid">
-      <figure class="reveal"><img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista almond icecream tower" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/strawberry-duo.jpeg" alt="Two strawberry faloodas in stem glasses" loading="lazy" /></figure>
-      <figure class="reveal"><img class="img-bottom" src="assets/car-cake.jpeg" alt="Customized car-themed birthday cake" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/falooda-classic.jpeg" alt="Classic falooda with umbrella and wafers" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-l" src="assets/jar-falooda.jpeg" alt="Mason jar falooda with whipped cream" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-r" src="assets/icecream-sandwich.jpeg" alt="Icecream sandwich with cookie shells" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/choco-cake.jpeg" alt="Chocolate cake slice with ganache pour" loading="lazy" /></figure>
-      <figure class="reveal"><img class="img-bottom" src="assets/doll-cake.jpeg" alt="Customized princess doll cake with rosette frosting" loading="lazy" /></figure>
-      <figure class="reveal"><img class="img-bottom" src="assets/rose-cake.jpeg" alt="Customized cake with fresh roses and fairy door" loading="lazy" /></figure>
-      <figure class="reveal"><img class="pos-c" src="assets/choc-sundae.jpeg" alt="Chocolate sundae with wafer roll in a glass bowl" loading="lazy" /></figure>
-    </div>
-    <p class="gallery__handle reveal">Follow the daily counter — <a href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">@iceberg_ndl</a></p>
-  </section>
+  <!-- ================= COLLECTIONS (cinematic full-screen gallery) =================
+       Replaces the gallery grid: one full-screen scene per category that
+       snaps into view on scroll (CSS scroll-snap), with a parallax
+       backdrop and frameless glass product chips. -->
+  <div class="collections" id="gallery">
+
+    <section class="collection" data-menu="cake">
+      <div class="collection__bg"><img src="assets/rose-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 72%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Cakes</h2>
+          <p class="collection__sub">Tiered, themed and baked to order — centrepieces for every celebration.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/car-cake.jpeg" alt="Customized car-themed birthday cake" loading="lazy" style="object-position: 48% 84%" /></span>
+            <span class="collection__meta"><strong>Customized Cakes</strong><em>from ₹999</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" style="object-position: 50% 78%" /></span>
+            <span class="collection__meta"><strong>Wedding Cakes</strong><em>from ₹1,999</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/doll-cake.jpeg" alt="Princess doll cake with rosette frosting" loading="lazy" style="object-position: 50% 78%" /></span>
+            <span class="collection__meta"><strong>Theme Cakes</strong><em>from ₹999</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="cake">Browse all cakes →</a>
+      </div>
+    </section>
+
+    <section class="collection" data-menu="icecream">
+      <div class="collection__bg"><img src="assets/scoops-happiness.jpeg" alt="" loading="lazy" style="object-position: 70% 55%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Ice Creams</h2>
+          <p class="collection__sub">Slow-churned scoops, sundaes and cones — finished by hand at the counter.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/dipped-cone.jpeg" alt="Choco-dipped waffle cone" loading="lazy" style="object-position: 96% 62%" /></span>
+            <span class="collection__meta"><strong>Choco-Dipped Cone</strong><em>₹89</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/cherry-sundae.jpeg" alt="Cherry scoop sundae" loading="lazy" style="object-position: 52% 62%" /></span>
+            <span class="collection__meta"><strong>Cherry Scoop Sundae</strong><em>₹149</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/pista-bowl.jpeg" alt="Nutty pista delight bowl" loading="lazy" style="object-position: 48% 62%" /></span>
+            <span class="collection__meta"><strong>Nutty Pista Delight</strong><em>₹139</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="icecream">Browse all ice creams →</a>
+      </div>
+    </section>
+
+    <section class="collection" data-menu="pastry">
+      <div class="collection__bg"><img src="assets/choco-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 75%" aria-hidden="true" /></div>
+      <div class="collection__scrim" aria-hidden="true"></div>
+      <div class="collection__inner">
+        <header class="collection__head reveal">
+          <p class="section__eyebrow">The Collection</p>
+          <h2 class="collection__title">Pastries</h2>
+          <p class="collection__sub">Slices, éclairs, tarts and tea cakes — the counter changes daily.</p>
+        </header>
+        <ul class="collection__items">
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" style="object-position: 50% 80%" /></span>
+            <span class="collection__meta"><strong>Pastries &amp; Slices</strong><em>from ₹99</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl" loading="lazy" style="object-position: 50% 75%" /></span>
+            <span class="collection__meta"><strong>Mango Tres Leches</strong><em>₹199</em></span>
+          </li>
+          <li class="collection__item reveal">
+            <span class="collection__thumb"><img src="assets/mango-jar-cake.jpeg" alt="Mango jar cake" loading="lazy" style="object-position: 50% 80%" /></span>
+            <span class="collection__meta"><strong>Mango Jar Cake</strong><em>₹179</em></span>
+          </li>
+        </ul>
+        <a class="collection__cta reveal" href="#menu" data-filter="pastry">Browse all pastries →</a>
+      </div>
+    </section>
+
+  </div>
 
   <!-- ================= VISIT / CTA ================= -->
   <section class="visit section" id="visit">
