@@ -8,7 +8,7 @@ faloodas, sundaes, customized cakes and pastries.
 - **Dark premium aesthetic** — deep charcoal gradients with gold accents, Fraunces + Outfit typography
 - **Cinematic hero** — full-screen background video with layered gradient veil
 - **Scroll-driven showcase** — a sticky horizontal slider where treats glide into center and scale with scroll position (lerp-smoothed, reduced-motion fallback to a swipeable row)
-- **Menu section** — grid of ice creams, faloodas, cakes and pastries with prices, filter tabs and Order Now buttons
+- **Cinematic menu** — full-screen snap-scroll category panels (Ice Creams / Cakes & Wedding Cakes / Pastries) driven by GSAP ScrollTrigger: presentation-style snap, background parallax, and staggered fine-dining list entrances over full-bleed studio photography
 - **3D experience** — interactive tilt stage that follows the pointer/touch, with a ready-made container for a Spline scene (`data-spline-scene` on `#splineStage`)
 - **Mobile-app UI** — sticky filter pills, full-screen menu overlay, safe-area padding, fluid type
 
@@ -17,9 +17,19 @@ faloodas, sundaes, customized cakes and pastries.
 ```
 index.html   — single-page markup
 styles.css   — all styling (dark theme, animations, responsive)
-script.js    — nav, menu filters, reveal-on-scroll, showcase slider, 3D tilt
+script.js    — nav, category panels, reveal-on-scroll, showcase slider, 3D tilt
+js/          — vendored GSAP 3.12.5 + ScrollTrigger (no CDN dependency)
 assets/      — brand photos + hero video
 ```
+
+## Cinematic category panels (GSAP ScrollTrigger)
+
+The menu is three full-screen panels that snap into view like a presentation
+(desktop), each with a slow parallax background and staggered entrances that
+play on arrival and reverse on exit. GSAP is vendored in `js/` so it loads
+same-origin. Mobile skips snap and parallax for performance; if GSAP is
+absent or the visitor prefers reduced motion, a CSS scroll-snap +
+IntersectionObserver fallback takes over automatically.
 
 ## Swapping in the hero video
 

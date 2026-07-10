@@ -50,47 +50,6 @@ links.querySelectorAll("a").forEach((a) =>
   })
 );
 
-/* ---------- menu filter tabs ---------- */
-const tabs = document.querySelectorAll(".menu__tab");
-const cards = document.querySelectorAll(".card[data-category]");
-const menuTitle = document.getElementById("menuTitle");
-const menuTagline = document.getElementById("menuTagline");
-
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach((t) => {
-      t.classList.remove("is-active");
-      t.setAttribute("aria-selected", "false");
-    });
-    tab.classList.add("is-active");
-    tab.setAttribute("aria-selected", "true");
-    tab.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
-
-    // cinematic header cross-fade
-    if (menuTitle && tab.dataset.title) {
-      const head = menuTitle.parentElement;
-      head.classList.add("is-swapping");
-      setTimeout(() => {
-        menuTitle.innerHTML = tab.dataset.title;
-        if (menuTagline && tab.dataset.tag) menuTagline.textContent = tab.dataset.tag;
-        head.classList.remove("is-swapping");
-      }, 200);
-    }
-
-    const filter = tab.dataset.filter;
-    cards.forEach((card) => {
-      const show = filter === "all" || card.dataset.category === filter;
-      card.classList.toggle("is-hidden", !show);
-      if (show) {
-        card.classList.remove("is-visible");
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => card.classList.add("is-visible"))
-        );
-      }
-    });
-  });
-});
-
 /* ---------- reveal on scroll ---------- */
 const revealables = document.querySelectorAll(".reveal");
 if ("IntersectionObserver" in window && !prefersReducedMotion) {
@@ -325,6 +284,77 @@ if (stage && stage.dataset.splineScene) {
     io.observe(section);
   } else {
     activate(startName);
+  }
+})();
+
+/* ---------- cinematic category panels (GSAP ScrollTrigger) ----------
+   Full-screen Ice Creams / Cakes / Pastries panels. GSAP (vendored in /js)
+   drives: presentation-style snap between panels, a slow parallax scrub on
+   each background, and staggered entrances that play as a panel arrives and
+   reverse as it leaves. Mobile skips snap + parallax; if GSAP is missing or
+   reduced-motion is set, a CSS/IntersectionObserver fallback takes over. */
+(function cinematicCats() {
+  const section = document.querySelector(".cats");
+  if (!section) return;
+  const panels = [...section.querySelectorAll(".cat")];
+  const desktop = window.matchMedia("(min-width: 861px)").matches;
+  const hasGsap = !!(window.gsap && window.ScrollTrigger);
+
+  if (hasGsap && !prefersReducedMotion) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // presentation-style snap between the three panels (desktop only)
+    if (desktop) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom bottom",
+        snap: {
+          snapTo: 1 / (panels.length - 1),
+          duration: { min: 0.3, max: 0.8 },
+          delay: 0.08,
+          ease: "power2.inOut",
+        },
+      });
+    }
+
+    panels.forEach((panel) => {
+      // slow parallax on the full-bleed background
+      if (desktop) {
+        const bg = panel.querySelector(".cat__bg img");
+        gsap.fromTo(
+          bg,
+          { yPercent: -6 },
+          {
+            yPercent: 6,
+            ease: "none",
+            scrollTrigger: { trigger: panel, start: "top bottom", end: "bottom top", scrub: true },
+          }
+        );
+      }
+      // staggered entrance that performs on arrival, reverses on exit
+      gsap.from(panel.querySelectorAll("[data-cat-fade]"), {
+        opacity: 0,
+        y: 44,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.09,
+        scrollTrigger: { trigger: panel, start: "top 62%", toggleActions: "play none none reverse" },
+      });
+    });
+  } else {
+    // fallback: CSS scroll-snap (desktop) + IntersectionObserver fades
+    document.documentElement.classList.add("no-gsap");
+    if (desktop && !prefersReducedMotion) document.documentElement.classList.add("snap-cats");
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => e.target.classList.toggle("in-view", e.isIntersecting)),
+        { threshold: 0.35 }
+      );
+      panels.forEach((p) => io.observe(p));
+    } else {
+      panels.forEach((p) => p.classList.add("in-view"));
+    }
   }
 })();
 
