@@ -174,7 +174,7 @@ if (cine) {
       [0, 0.66],
       [0, 0.95],
     ];
-    const eyebrow = cine.querySelector(".cine__eyebrow");
+    const eyebrow = cine.querySelector(".cine__masthead");
 
     const applyAct = (p, u, fade, scrubbing) => {
       p.act.style.opacity = fade;
@@ -299,7 +299,10 @@ if (cine) {
 }
 
 /* ---------- reveal on scroll ---------- */
-const revealables = document.querySelectorAll(".reveal");
+// when GSAP ScrollTrigger is present it owns every reveal except the menu
+// cards (whose filter cascade needs the class-based transitions)
+const gsapReveals = !!(window.gsap && window.ScrollTrigger) && !prefersReducedMotion;
+const revealables = document.querySelectorAll(gsapReveals ? ".reveal.card" : ".reveal");
 if ("IntersectionObserver" in window && !prefersReducedMotion) {
   const io = new IntersectionObserver(
     (entries) => {
@@ -450,10 +453,123 @@ if (stage && stage.dataset.splineScene) {
   })(0);
 }
 
+
+/* ---------- premium scroll: Lenis + GSAP ScrollTrigger ---------- */
+// Lenis drives a buttery smoothed scroll; GSAP ScrollTrigger handles the
+// scroll-reveals and collection parallax. Both are vendored locally and the
+// site degrades gracefully (IntersectionObserver reveals, native scroll)
+// if either is missing or the visitor prefers reduced motion.
+let lenis = null;
+if (window.Lenis && !prefersReducedMotion) {
+  lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  } else {
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+  }
+
+  // anchor navigation goes through Lenis so it inherits the same easing
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const target = document.querySelector(a.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: a.getAttribute("href") === "#top" ? 0 : -70, duration: 1.4 });
+    });
+  });
+
+  // collections snap, re-implemented through Lenis (CSS snap is disabled
+  // while Lenis owns the scroll): when scrolling settles near a scene,
+  // glide it into full view
+  const snapSections = [...document.querySelectorAll(".collection")];
+  if (snapSections.length) {
+    let snapTimer = null;
+    let snapping = false;
+    lenis.on("scroll", ({ velocity }) => {
+      if (snapping) return;
+      clearTimeout(snapTimer);
+      if (Math.abs(velocity) > 0.15) return;
+      snapTimer = setTimeout(() => {
+        const vh = window.innerHeight;
+        for (const sec of snapSections) {
+          const top = sec.getBoundingClientRect().top;
+          if (Math.abs(top) < vh * 0.35 && Math.abs(top) > 2) {
+            snapping = true;
+            lenis.scrollTo(sec, { duration: 0.9, onComplete: () => (snapping = false) });
+            break;
+          }
+        }
+      }, 140);
+    });
+  }
+}
+
+if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add("gsap-on");
+
+  // scroll-reveals with a premium stagger (menu cards keep the class-based
+  // reveal so the filter tabs' cascade logic stays untouched)
+  ScrollTrigger.batch(".reveal:not(.card)", {
+    start: "top 88%",
+    once: true,
+    onEnter: (batch) =>
+      gsap.to(batch, {
+        opacity: 1,
+        y: 0,
+        duration: 1.1,
+        ease: "power3.out",
+        stagger: 0.12,
+        overwrite: true,
+      }),
+  });
+
+  // collections parallax via scrubbed ScrollTrigger tweens
+  document.querySelectorAll(".collection").forEach((sec) => {
+    const img = sec.querySelector(".collection__bg img");
+    if (!img) return;
+    gsap.fromTo(
+      img,
+      { yPercent: -5 },
+      {
+        yPercent: 5,
+        ease: "none",
+        scrollTrigger: { trigger: sec, start: "top bottom", end: "bottom top", scrub: true },
+      }
+    );
+  });
+}
+
+/* ---------- customer love: auto-advancing carousel ---------- */
+const loveTrack = document.getElementById("loveTrack");
+if (loveTrack && !prefersReducedMotion) {
+  let loveIdle = true;
+  ["pointerdown", "wheel", "touchstart"].forEach((ev) =>
+    loveTrack.addEventListener(ev, () => (loveIdle = false), { passive: true })
+  );
+  loveTrack.addEventListener("pointerleave", () => (loveIdle = true));
+  setInterval(() => {
+    if (!loveIdle || document.visibilityState !== "visible") return;
+    const cards = loveTrack.children;
+    if (!cards.length) return;
+    const step = cards[0].offsetWidth + parseFloat(getComputedStyle(loveTrack).gap || "16");
+    const atEnd = loveTrack.scrollLeft + loveTrack.clientWidth >= loveTrack.scrollWidth - step / 2;
+    loveTrack.scrollTo({ left: atEnd ? 0 : loveTrack.scrollLeft + step, behavior: "smooth" });
+  }, 4500);
+}
+
 /* ---------- collections: parallax backdrops + menu handoff ---------- */
 const collections = [...document.querySelectorAll(".collection")];
 if (collections.length) {
-  if (!prefersReducedMotion) {
+  if (!prefersReducedMotion && !(window.gsap && window.ScrollTrigger)) {
     const scenes = collections.map((sec) => ({
       sec,
       img: sec.querySelector(".collection__bg img"),
