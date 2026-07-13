@@ -32,8 +32,6 @@ burger.addEventListener("click", () => setSheet(!sheet.classList.contains("is-op
 /* ---------- lazy video loading + on-screen playback ---------- */
 const videos = Array.from(document.querySelectorAll(".panel__video"));
 
-// Attach the real source only when the panel approaches the viewport,
-// so first paint costs one poster image instead of four videos.
 const loadObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (!entry.isIntersecting) return;
@@ -47,7 +45,6 @@ const loadObserver = new IntersectionObserver((entries) => {
   });
 }, { rootMargin: "150% 0px" });
 
-// Play only the video the visitor is looking at; pause the rest.
 const playObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     const video = entry.target;
@@ -69,7 +66,21 @@ const panels = Array.from(document.querySelectorAll(".panel"));
 const dots = Array.from(document.querySelectorAll("#dots a"));
 const navLinks = Array.from(document.querySelectorAll("#navLinks a"));
 
+let currentPanel = panels[0];
+
 function markActive(index) {
+  // Smoothly reset cursor-parallax offsets on the panel we're leaving
+  if (currentPanel && hasGSAP) {
+    const leaving = [
+      currentPanel.querySelector(".panel__video, .panel__img"),
+      currentPanel.querySelector(".panel__head, .hero__content"),
+      currentPanel.querySelector(".glass-card"),
+    ].filter(Boolean);
+    gsap.to(leaving, { x: 0, y: 0, duration: 0.55, ease: "power2.out", overwrite: "auto" });
+  }
+
+  currentPanel = panels[index];
+
   dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
   const id = panels[index] ? panels[index].id : "";
   navLinks.forEach((link) =>
@@ -164,6 +175,44 @@ if (hasGSAP && !prefersReducedMotion) {
     onEnterBack: () => markActive(0),
   });
   markActive(0);
+
+  /* ---------- Mouse-cursor parallax: layered depth on active panel ----------
+     Background (farthest layer) drifts opposite to cursor.
+     Text (mid layer) drifts slightly toward cursor.
+     Glass card (nearest layer) floats the most toward cursor.
+     Uses pixel x/y so it doesn't conflict with the scroll scrub (yPercent/scale). */
+  window.addEventListener("mousemove", (e) => {
+    if (!currentPanel) return;
+
+    const nx = (e.clientX / window.innerWidth)  * 2 - 1;  // -1 → +1
+    const ny = (e.clientY / window.innerHeight) * 2 - 1;  // -1 → +1
+
+    const media = currentPanel.querySelector(".panel__video, .panel__img");
+    const head  = currentPanel.querySelector(".panel__head, .hero__content");
+    const card  = currentPanel.querySelector(".glass-card");
+
+    if (media) {
+      gsap.to(media, { x: nx * -16, y: ny * -10, duration: 1.8, ease: "power2.out", overwrite: "auto" });
+    }
+    if (head) {
+      gsap.to(head,  { x: nx *  8,  y: ny *  5,  duration: 2.1, ease: "power2.out", overwrite: "auto" });
+    }
+    if (card) {
+      gsap.to(card,  { x: nx * 13,  y: ny *  8,  duration: 1.5, ease: "power2.out", overwrite: "auto" });
+    }
+  }, { passive: true });
+
+  /* Reset parallax when the cursor leaves the page */
+  document.addEventListener("mouseleave", () => {
+    if (!currentPanel) return;
+    const targets = [
+      currentPanel.querySelector(".panel__video, .panel__img"),
+      currentPanel.querySelector(".panel__head, .hero__content"),
+      currentPanel.querySelector(".glass-card"),
+    ].filter(Boolean);
+    gsap.to(targets, { x: 0, y: 0, duration: 1.2, ease: "power3.out", overwrite: "auto" });
+  });
+
 } else {
   /* graceful fallback: everything visible, plain anchors, native smooth scroll */
   document.querySelectorAll(".reveal, .glass-card").forEach((el) => {
