@@ -1,38 +1,43 @@
 # Iceberg — House of Icecreams & Pastries
 
-A high-end, cinematic single-page website for **Iceberg** (Nandyal, Andhra Pradesh) —
-faloodas, sundaes, customized cakes and pastries.
+A premium, full-screen cinematic homepage for **Iceberg** (Nandyal, Andhra Pradesh) —
+ice creams, thick shakes, sludges, pastries and custom celebration cakes.
 
-## Highlights
+## Experience
 
-- **Dark premium aesthetic** — deep charcoal gradients with gold accents, Fraunces + Outfit typography
-- **Cinematic hero** — full-screen background video with layered gradient veil
-- **Scroll-driven showcase** — a sticky horizontal slider where treats glide into center and scale with scroll position (lerp-smoothed, reduced-motion fallback to a swipeable row)
-- **Menu section** — grid of ice creams, faloodas, cakes and pastries with prices, filter tabs and Order Now buttons
-- **3D experience** — interactive tilt stage that follows the pointer/touch, with a ready-made container for a Spline scene (`data-spline-scene` on `#splineStage`)
-- **Mobile-app UI** — sticky filter pills, full-screen menu overlay, safe-area padding, fluid type
+- **Full-screen snap-scroll** — GSAP ScrollTrigger snaps the viewport to each
+  category section (hero → Ice Cream → Milk Shake → Sludge → Pastries → Cakes)
+- **Cinematic reels** — the hero and video sections play optimized, muted,
+  looping product films (`berry-reel.mp4`, `pista-reel.mp4`, `sludge-loop.mp4`);
+  image sections get a scroll-scrubbed Ken Burns drift instead
+- **Apple-style glassmorphism cards** — each category reveals a frosted product
+  card (name, highlights, price, WhatsApp order CTA) after the scene plays
+- **Luxury cafe aesthetic** — Fraunces + Outfit variable fonts (self-hosted),
+  deep charcoal + gold palette, soft spacing, minimalist type
+- **Contact integration** — sticky nav with Instagram
+  ([@iceberg_ndl](https://www.instagram.com/iceberg_ndl)) and a floating
+  WhatsApp button (+91 83408 13972) with prefilled order messages
+
+## Performance
+
+- Videos are lazy-loaded (`data-src` + IntersectionObserver) and only play
+  while on screen; each is H.264, muted, `+faststart`, 0.4–2 MB
+- Poster frames paint instantly; the hero poster is preloaded
+- Zero third-party requests: GSAP and both fonts are vendored locally
+- Reduced-motion users get a static, fully readable page (no snap, no autoplay)
 
 ## Structure
 
 ```
-index.html   — single-page markup
-styles.css   — all styling (dark theme, animations, responsive)
-script.js    — nav, menu filters, reveal-on-scroll, showcase slider, 3D tilt
-assets/      — brand photos + hero video
+index.html      — single-page markup (hero + 5 category panels)
+styles.css      — luxury theme, glass cards, responsive layout
+script.js       — GSAP snap-scroll, panel choreography, lazy video engine
+assets/         — reels, posters, panel crops, brand photos
+assets/fonts/   — Fraunces & Outfit variable woff2
+assets/vendor/  — gsap, ScrollTrigger, ScrollToPlugin
 ```
-
-## Embedding a Spline 3D model
-
-Set the scene URL on the stage container in `index.html`:
-
-```html
-<div class="spline__stage" id="splineStage"
-     data-spline-scene="https://prod.spline.design/XXXX/scene.splinecode">
-```
-
-The Spline viewer loads automatically and replaces the CSS tilt fallback.
 
 ## Contact
 
 - Instagram: [@iceberg_ndl](https://www.instagram.com/iceberg_ndl)
-- Phone: +91 83408 13972
+- WhatsApp: [+91 83408 13972](https://wa.me/918340813972)
