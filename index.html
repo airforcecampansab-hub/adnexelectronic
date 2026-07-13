@@ -2,655 +2,269 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iceberg — House of Icecreams &amp; Pastries</title>
-  <meta name="description" content="Iceberg — House of Icecreams & Pastries. Handcrafted faloodas, sundaes, cakes and pastries. Tastes as good as it looks." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Iceberg — House of Icecreams &amp; Pastries · Nandyal</title>
+  <meta name="description" content="Iceberg, Nandyal — premium ice creams, thick shakes, sludges, pastries and custom cakes. A cinematic taste experience." />
+  <meta name="theme-color" content="#0b0a08" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍨</text></svg>" />
+
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/fraunces-var.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/outfit-var.woff2" crossorigin />
+  <link rel="preload" as="image" href="assets/berry-poster.jpg" fetchpriority="high" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <script defer src="assets/vendor/gsap.min.js"></script>
+  <script defer src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="assets/vendor/ScrollToPlugin.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
 
-  <!-- ================= NAV ================= -->
+  <!-- ===== Sticky navigation ===== -->
   <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#top" class="nav__brand">
-        <span class="nav__brand-mark">❄</span>
-        <span class="nav__brand-text">ICE<em>BERG</em><small>House of Icecreams &amp; Pastries</small></span>
+    <a class="nav__brand" href="#top" data-scroll>
+      <span class="nav__brand-mark">Iceberg</span>
+      <span class="nav__brand-sub">House of Icecreams &amp; Pastries</span>
+    </a>
+
+    <nav class="nav__links" id="navLinks" aria-label="Categories">
+      <a href="#ice-cream" data-scroll>Ice Cream</a>
+      <a href="#milk-shake" data-scroll>Milk Shake</a>
+      <a href="#sludge" data-scroll>Sludge</a>
+      <a href="#pastries" data-scroll>Pastries</a>
+      <a href="#cakes" data-scroll>Cakes</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a class="nav__icon" href="https://www.instagram.com/iceberg_ndl" target="_blank" rel="noopener" aria-label="Iceberg on Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/>
+          <circle cx="12" cy="12" r="4.5"/>
+          <circle cx="17.6" cy="6.4" r="1" fill="currentColor" stroke="none"/>
+        </svg>
       </a>
-      <nav class="nav__links" id="navLinks">
-        <a href="#menu">Menu</a>
-        <a href="#story">Our Story</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#visit">Visit Us</a>
-      </nav>
-      <a href="#menu" class="btn btn--gold nav__cta">Order Now</a>
-      <button class="nav__burger" id="navBurger" aria-label="Open menu">
-        <span></span><span></span><span></span>
+      <button class="nav__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
       </button>
     </div>
   </header>
 
-  <!-- ================= HERO (cinematic scroll-performed commercials) =================
-       Each act performs one 10s product commercial: exploded view →
-       suspended hero shot → reconstruction → glide left → glass info card.
-       Idle at the top of the page the timeline plays itself in real time;
-       scrolling scrubs the same timeline. Ingredient orbs are focal-point
-       crops carved from the same campaign poster as the dessert.
-       Drop the CGI reels into assets/ as strawberry.mp4, blueberry.mp4 and
-       pista.mp4: on desktop each act then plays its reel full-bleed (idle)
-       and scrubs it by scroll; phones and reduced-data connections keep the
-       lightweight poster-crop animation as the fallback. -->
-  <section class="hero hero--cine" id="top">
-    <div class="hero__sticky">
-      <div class="cine__bg" aria-hidden="true"></div>
+  <!-- ===== Snap zone: hero + five category panels ===== -->
+  <main class="snap-zone" id="snapZone">
 
-      <div class="cine__acts">
-        <article class="cine-act" data-video="assets/pista.mp4" style="--stage: #232816; --tint: rgba(151, 162, 92, 0.32)" aria-label="Nutty Pista Delight — pistachio ice cream">
-          <div class="cine-act__tint" aria-hidden="true"></div>
-          <span class="cine-act__shadow" aria-hidden="true"></span>
-          <div class="cine-act__dessert">
-            <img src="assets/pista-bowl.jpeg" style="transform-origin: 50% 64%; --crop: 2.4" alt="Creamy pistachio ice cream scoops in a rustic bowl" />
-          </div>
-          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 76% 70%; --crop: 5" alt="" /></span>
-          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 30% 68%; --crop: 3.4" alt="" /></span>
-          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/pista-bowl.jpeg" style="transform-origin: 52% 74%; --crop: 3.2" alt="" /></span>
-          <aside class="cine-act__card">
-            <span class="cine-act__line" aria-hidden="true"></span>
-            <h2 class="cine-act__title">Nutty Pista Delight</h2>
-            <p class="cine-act__desc">Every spoonful promises a nutty delight that will transport you to a world of flavor.</p>
-            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
-          </aside>
-        </article>
-
-        <article class="cine-act" data-video="assets/blueberry.mp4" style="--stage: #1d1022; --tint: rgba(146, 92, 178, 0.3)" aria-label="Berry Berry Delicious — blueberry ice cream">
-          <div class="cine-act__tint" aria-hidden="true"></div>
-          <span class="cine-act__shadow" aria-hidden="true"></span>
-          <div class="cine-act__dessert">
-            <img src="assets/berry-cup.jpeg" style="transform-origin: 50% 62%; --crop: 2.4" alt="Rich purple blueberry ice cream swirl in a white cup" loading="lazy" />
-          </div>
-          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 72% 74%; --crop: 5" alt="" loading="lazy" /></span>
-          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 26% 76%; --crop: 3.4" alt="" loading="lazy" /></span>
-          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/berry-cup.jpeg" style="transform-origin: 58% 82%; --crop: 3.2" alt="" loading="lazy" /></span>
-          <aside class="cine-act__card">
-            <span class="cine-act__line" aria-hidden="true"></span>
-            <h2 class="cine-act__title">Berry Berry Delicious</h2>
-            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
-          </aside>
-        </article>
-
-        <article class="cine-act" data-video="assets/strawberry.mp4" style="--stage: #2b171b; --tint: rgba(229, 105, 127, 0.3)" aria-label="Berry Good Vibes — strawberry ice cream">
-          <div class="cine-act__tint" aria-hidden="true"></div>
-          <span class="cine-act__shadow" aria-hidden="true"></span>
-          <div class="cine-act__dessert">
-            <img src="assets/strawberry-bowl.jpeg" style="transform-origin: 50% 66%; --crop: 2.3" alt="Creamy strawberry ice cream in a clear glass bowl with fresh strawberries" loading="lazy" />
-          </div>
-          <span class="cine-act__orb cine-act__orb--a" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 28% 46%; --crop: 5" alt="" loading="lazy" /></span>
-          <span class="cine-act__orb cine-act__orb--b" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 67% 49%; --crop: 5" alt="" loading="lazy" /></span>
-          <span class="cine-act__orb cine-act__orb--c" aria-hidden="true"><img src="assets/strawberry-bowl.jpeg" style="transform-origin: 62% 73%; --crop: 4.5" alt="" loading="lazy" /></span>
-          <aside class="cine-act__card">
-            <span class="cine-act__line" aria-hidden="true"></span>
-            <h2 class="cine-act__title">Berry Good Vibes</h2>
-            <p class="cine-act__desc">Scoop up the joy of strawberry season with our creamy, dreamy delight!</p>
-            <a class="btn btn--gold cine-act__cta" href="#menu">Order Now</a>
-          </aside>
-        </article>
+    <!-- Hero -->
+    <section class="panel panel--hero" id="top" data-panel="hero">
+      <div class="panel__media">
+        <video class="panel__video" muted loop playsinline autoplay preload="metadata"
+               src="assets/berry-reel.mp4" poster="assets/berry-poster.jpg"></video>
+        <div class="panel__veil"></div>
       </div>
-
-      <div class="cine__sparkles" id="cineSparkles" aria-hidden="true"></div>
-
-      <p class="hero__eyebrow cine__eyebrow">Iceberg — Premium Desserts</p>
-      <div class="hero__dots" id="heroDots" aria-hidden="true">
-        <span class="is-active"></span><span></span><span></span>
+      <div class="hero__content">
+        <p class="hero__eyebrow reveal">Nandyal · Andhra Pradesh</p>
+        <h1 class="hero__title reveal">Iceberg</h1>
+        <p class="hero__sub reveal">House of Icecreams &amp; Pastries</p>
+        <p class="hero__line reveal">Slow-churned scoops, thick shakes and celebration cakes — crafted like cinema, served ice cold.</p>
       </div>
-      <div class="hero__scroll" aria-hidden="true"><span></span></div>
-    </div>
-  </section>
+      <a class="hero__cue" href="#ice-cream" data-scroll aria-label="Scroll to Ice Cream">
+        <span>Scroll</span>
+        <i></i>
+      </a>
+    </section>
 
-  <!-- ================= MARQUEE ================= -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>Wedding Cakes</span><i>✦</i><span>Birthday Cakes</span><i>✦</i><span>Anniversary Cakes</span><i>✦</i><span>Faloodas</span><i>✦</i><span>Sundaes</span><i>✦</i><span>Cupcakes</span><i>✦</i><span>Donuts</span><i>✦</i><span>Pastries</span><i>✦</i>
-      <span>Wedding Cakes</span><i>✦</i><span>Birthday Cakes</span><i>✦</i><span>Anniversary Cakes</span><i>✦</i><span>Faloodas</span><i>✦</i><span>Sundaes</span><i>✦</i><span>Cupcakes</span><i>✦</i><span>Donuts</span><i>✦</i><span>Pastries</span><i>✦</i>
-    </div>
-  </div>
-
-  <!-- ================= SHOWCASE (scroll-driven horizontal slider) ================= -->
-  <section class="showcase" id="showcase">
-    <div class="showcase__sticky">
-      <div class="showcase__head">
-        <p class="section__eyebrow">The Counter</p>
-        <h2 class="section__title">Keep Scrolling.<br />It Gets Sweeter.</h2>
+    <!-- 01 · Ice Cream -->
+    <section class="panel" id="ice-cream" data-panel="video">
+      <div class="panel__media">
+        <video class="panel__video" muted loop playsinline preload="none"
+               data-src="assets/pista-reel.mp4" poster="assets/pista-poster.jpg"></video>
+        <div class="panel__veil"></div>
       </div>
-      <div class="showcase__track" id="showcaseTrack">
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-l" src="assets/falooda-royal.jpeg" alt="Royal dry fruit falooda" loading="lazy" /></div>
-          <figcaption><strong>Royal Dry Fruit Falooda</strong><span>₹249</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-c" src="assets/strawberry-duo.jpeg" alt="Two strawberry faloodas in stem glasses" loading="lazy" /></div>
-          <figcaption><strong>Strawberry Scoop Duo</strong><span>₹329</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="img-bottom" src="assets/sweet-cake.jpeg" alt="Chocolate strawberry layer cake slice" loading="lazy" /></div>
-          <figcaption><strong>Choco-Berry Slice</strong><span>₹149</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista almond icecream tower" loading="lazy" /></div>
-          <figcaption><strong>Pista Almond Tower</strong><span>₹299</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="img-bottom" src="assets/custom-cake.jpeg" alt="Customized chocolate birthday cake" loading="lazy" /></div>
-          <figcaption><strong>Customized Cakes</strong><span>from ₹999</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-l" src="assets/jar-falooda.jpeg" alt="Mason jar falooda with whipped cream" loading="lazy" /></div>
-          <figcaption><strong>Jar Falooda</strong><span>₹219</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-c" src="assets/scoops-tub.jpeg" alt="Triple scoop icecream tub with waffle and chocolate drizzle" loading="lazy" /></div>
-          <figcaption><strong>Triple Scoop Tub</strong><span>₹159</span></figcaption>
-        </figure>
-        <figure class="showcase__item">
-          <div class="showcase__frame"><img class="pos-far-r" src="assets/sundae-special.jpeg" alt="Mango rose sundae" loading="lazy" /></div>
-          <figcaption><strong>After-Lunch Sundae</strong><span>₹229</span></figcaption>
-        </figure>
-      </div>
-      <p class="showcase__hint" aria-hidden="true">scroll</p>
-    </div>
-  </section>
-
-  <!-- ================= MENU ================= -->
-  <section class="menu section" id="menu">
-    <div class="section__head reveal">
-      <p class="section__eyebrow">The Menu</p>
-      <h2 class="section__title">Choose Your Craving</h2>
-      <p class="section__sub">Every glass built layer by layer. Every cake baked to order.</p>
-    </div>
-
-    <div class="menu__tabs reveal" role="tablist">
-      <button class="menu__tab is-active" data-filter="all" role="tab">All</button>
-      <button class="menu__tab" data-filter="pastry" role="tab">Pastries</button>
-      <button class="menu__tab" data-filter="cake" role="tab">Cakes &amp; Wedding Cakes</button>
-      <button class="menu__tab" data-filter="icecream" role="tab">Ice Cream</button>
-      <button class="menu__tab" data-filter="falooda" role="tab">Faloodas</button>
-      <button class="menu__tab" data-filter="signature" role="tab">Signature Treats</button>
-      <button class="menu__tab" data-filter="sundae" role="tab">Sundaes</button>
-      <button class="menu__tab" data-filter="shake" role="tab">Shakes</button>
-    </div>
-
-    <div class="menu__header reveal" aria-live="polite">
-      <h3 class="menu__heading" id="menuHeading">Everything on the Counter</h3>
-      <p class="menu__count" id="menuCount"></p>
-    </div>
-
-    <div class="menu__grid" id="menuGrid">
-
-      <!-- Icecreams & Faloodas -->
-      <article class="card reveal" data-category="falooda signature">
-        <div class="card__media">
-          <img class="pos-l" src="assets/falooda-royal.jpeg" alt="Royal Dry Fruit Falooda topped with honey-glazed nuts" loading="lazy" />
-          <span class="card__badge">Bestseller</span>
+      <div class="panel__content">
+        <div class="panel__head">
+          <p class="panel__eyebrow reveal">01 — Ice Cream</p>
+          <h2 class="panel__title reveal">Nutty Pista<br/>Delight</h2>
+          <p class="panel__desc reveal">Roasted pistachios folded through triple-cream scoops, churned slow every morning.</p>
         </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Royal Dry Fruit Falooda</h3>
-            <span class="card__price">₹249</span>
+        <aside class="glass-card" aria-label="Nutty Pista Delight — details">
+          <p class="glass-card__tag">Signature Scoop</p>
+          <h3 class="glass-card__name">Nutty Pista Delight</h3>
+          <ul class="glass-card__rows">
+            <li><i class="dot dot--pista"></i>Roasted pistachio crumble</li>
+            <li><i class="dot dot--cream"></i>Triple-cream slow churn</li>
+            <li><i class="dot dot--gold"></i>Salted nut praline dust</li>
+          </ul>
+          <div class="glass-card__foot">
+            <span class="glass-card__price">₹139</span>
+            <a class="glass-card__cta" target="_blank" rel="noopener"
+               href="https://wa.me/918340813972?text=Hi%20Iceberg!%20I%27d%20like%20to%20order%20the%20Nutty%20Pista%20Delight.">Order</a>
           </div>
-          <p class="card__desc">Basil seeds, rose vermicelli, seasonal fruit and malai icecream crowned with honey-glazed nuts.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream signature">
-        <div class="card__media">
-          <img class="pos-r" src="assets/pista-tower.jpeg" alt="Pista Almond Tower with wafer and dripping pistachio cream" loading="lazy" />
-          <span class="card__badge card__badge--new">New</span>
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Pista Almond Tower</h3>
-            <span class="card__price">₹299</span>
-          </div>
-          <p class="card__desc">A towering pour of pistachio cream over roasted almonds, brownie chunks and crisp wafer shards.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="falooda">
-        <div class="card__media">
-          <img class="pos-c" src="assets/falooda-classic.jpeg" alt="Classic Rich Creamy Falooda with paper umbrella and wafers" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Rich Creamy Falooda</h3>
-            <span class="card__price">₹199</span>
-          </div>
-          <p class="card__desc">The classic — layered jellies, falooda sev, crushed ice, rose syrup and a double scoop finish.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="sundae signature">
-        <div class="card__media">
-          <img class="pos-far-r" src="assets/sundae-special.jpeg" alt="After-Lunch Sundae Special with mango layers and rose base" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">After-Lunch Sundae</h3>
-            <span class="card__price">₹229</span>
-          </div>
-          <p class="card__desc">Mango cream, basil seeds and rose falooda base — the treat that takes care of the rest.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="img-bottom" src="assets/mint-cup.jpeg" alt="Mint chocolate chip icecream cup with waffle cone" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Mint Choc Chip Cup</h3>
-            <span class="card__price">₹129</span>
-          </div>
-          <p class="card__desc">Triple-stacked mint scoops loaded with chocolate chunks and a crisp waffle wedge.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="pos-l" src="assets/softy-cone.jpeg" alt="Chocolate vanilla swirl soft serve in a paper cone" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Softy Swirl Cone</h3>
-            <span class="card__price">₹99</span>
-          </div>
-          <p class="card__desc">Chocolate, vanilla, mango, pistachio, berry… why choose one when you can swirl them?</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="sundae">
-        <div class="card__media">
-          <img class="pos-c" src="assets/cherry-sundae.jpeg" alt="Fresh icecream sundae with berry ripple and a cherry on top" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Cherry Scoop Sundae</h3>
-            <span class="card__price">₹149</span>
-          </div>
-          <p class="card__desc">Fresh vanilla scoops rippled with berry compote, mint and the classic cherry on top.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="pos-c" src="assets/pista-bowl.jpeg" alt="Nutty pista icecream scoops in a ceramic bowl" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Nutty Pista Delight</h3>
-            <span class="card__price">₹139</span>
-          </div>
-          <p class="card__desc">Roasted pistachio scoops showered with crushed nuts — every spoonful a nutty delight.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="pos-c" src="assets/berry-cup.jpeg" alt="Blueberry icecream swirl cup with fresh blueberries" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Berry Berry Scoop</h3>
-            <span class="card__price">₹139</span>
-          </div>
-          <p class="card__desc">Blueberry-swirled scoops piled over a crisp cup, finished with frosted berries.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="pos-c" src="assets/strawberry-bowl.jpeg" alt="Strawberry icecream scoops in a glass bowl with fresh strawberries" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Strawberry Season Bowl</h3>
-            <span class="card__price">₹139</span>
-          </div>
-          <p class="card__desc">Creamy, dreamy strawberry scoops with real fruit folded through every bite.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="shake">
-        <div class="card__media">
-          <img class="pos-l" src="assets/shakes-trio.jpeg" alt="Butterscotch milkshake topped with praline crumble" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Butterscotch Shake</h3>
-            <span class="card__price">₹129</span>
-          </div>
-          <p class="card__desc">Caramel-striped shake under a praline crown — pairs dangerously well with our brownie.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="icecream">
-        <div class="card__media">
-          <img class="pos-cone" src="assets/dipped-cone.jpeg" alt="Choco-dipped waffle cone with vanilla scoops" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Choco-Dipped Cone</h3>
-            <span class="card__price">₹89</span>
-          </div>
-          <p class="card__desc">Double vanilla scoops over a chocolate-dipped waffle cone — celebrate every bite.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <!-- Cakes & Pastries -->
-      <article class="card reveal" data-category="cake signature">
-        <div class="card__media">
-          <img class="img-deep" src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Wedding Cakes</h3>
-            <span class="card__price">from ₹1,999</span>
-          </div>
-          <p class="card__desc">Multi-tier showpieces designed with you — a wedding cake that tastes as beautiful as it looks.</p>
-          <a class="btn btn--card" href="tel:+918340813972">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="cake">
-        <div class="card__media">
-          <img class="img-bottom" src="assets/mango-jar-cake.jpeg" alt="Mango jar cake layered with cream and fresh mango" loading="lazy" />
-          <span class="card__badge card__badge--new">Seasonal</span>
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Mango Jar Cake</h3>
-            <span class="card__price">₹179</span>
-          </div>
-          <p class="card__desc">Layers of sponge, whipped cream and fresh Alphonso mango, packed in a jar to go.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="pastry">
-        <div class="card__media">
-          <img class="img-bottom" src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl topped with cream and nuts" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Mango Tres Leches</h3>
-            <span class="card__price">₹199</span>
-          </div>
-          <p class="card__desc">Milk-soaked sponge under clouds of cream, fresh mango cubes and toasted pista flakes.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="cake">
-        <div class="card__media">
-          <img class="img-bottom" src="assets/custom-cake.jpeg" alt="Customized chocolate birthday cake with gym theme" loading="lazy" />
-          <span class="card__badge">Made to Order</span>
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Customized Cakes</h3>
-            <span class="card__price">from ₹999</span>
-          </div>
-          <p class="card__desc">Birthdays, anniversaries, any theme you dream up — delicious moments, delivered daily.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="pastry">
-        <div class="card__media card__media--art card__media--cupcake">
-          <span class="card__art-glyph">✦</span>
-          <span class="card__art-label">Petite Bakes</span>
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Cupcakes &amp; Donuts</h3>
-            <span class="card__price">from ₹79</span>
-          </div>
-          <p class="card__desc">Frosted daily in small batches — red velvet, salted caramel, Belgian chocolate and more.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="pastry">
-        <div class="card__media">
-          <img class="img-bottom" src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Pastries &amp; Slices</h3>
-            <span class="card__price">from ₹99</span>
-          </div>
-          <p class="card__desc">Choco-berry slices, éclairs, tarts and tea cakes — the counter changes daily, the quality never does.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-      <article class="card reveal" data-category="cake signature">
-        <div class="card__media">
-          <img class="pos-c" src="assets/choco-special.jpeg" alt="Special chocolate cake with dipped strawberries and ganache drip" loading="lazy" />
-        </div>
-        <div class="card__body">
-          <div class="card__row">
-            <h3 class="card__name">Chocolate Truffle Cake</h3>
-            <span class="card__price">from ₹499</span>
-          </div>
-          <p class="card__desc">Three dark layers under a slow pour of molten ganache — a slice of pure happiness.</p>
-          <a class="btn btn--card" href="https://instagram.com/iceberg_ndl" target="_blank" rel="noopener">Order Now</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ================= 3D EXPERIENCE ================= -->
-  <section class="spline section" id="experience">
-    <div class="spline__grid">
-      <div class="spline__copy">
-        <p class="section__eyebrow reveal">Interactive</p>
-        <h2 class="section__title reveal">Meet Your Treat<br />in 3D</h2>
-        <p class="reveal">Drag, tilt and spin the glass before you order it. Move your cursor over
-          the stage — the treat follows you.</p>
-        <ul class="spline__notes reveal">
-          <li>Built layer by layer, exactly like the real thing</li>
-          <li>Rotate to see every drizzle and topping</li>
-          <li>Works with touch on mobile</li>
-        </ul>
-        <a class="btn btn--gold reveal" href="#menu">Order the Real One</a>
-      </div>
-
-      <!--
-        Spline 3D embed container.
-        To use a real Spline scene: set data-spline-scene to your scene URL, e.g.
-        data-spline-scene="https://prod.spline.design/XXXXXXXX/scene.splinecode"
-        The viewer script is loaded automatically and replaces the CSS fallback.
-      -->
-      <div class="spline__stage reveal" id="splineStage" data-spline-scene="">
-        <div class="tilt" id="tiltScene" aria-label="Interactive 3D falooda preview">
-          <div class="tilt__glow" aria-hidden="true"></div>
-          <div class="tilt__card">
-            <img class="pos-far-r" src="assets/scoops-happiness.jpeg" alt="Waffle basket sundae with triple scoops in 3D preview" />
-            <div class="tilt__shine" aria-hidden="true"></div>
-          </div>
-          <span class="tilt__chip tilt__chip--a">Triple scoops</span>
-          <span class="tilt__chip tilt__chip--b">Choco drizzle</span>
-          <span class="tilt__chip tilt__chip--c">Waffle basket</span>
-          <span class="tilt__ring" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= STORY ================= -->
-  <section class="story section" id="story">
-    <div class="story__grid">
-      <div class="story__media reveal">
-        <div class="story__media-clip"><img class="pos-l" src="assets/falooda-royal.jpeg" alt="Layered falooda glass with fruit and cream" loading="lazy" /></div>
-        <div class="story__media-frame" aria-hidden="true"></div>
-      </div>
-      <div class="story__copy">
-        <p class="section__eyebrow reveal">Our Story</p>
-        <h2 class="section__title reveal">Crafted Cold.<br />Served Warm.</h2>
-        <p class="reveal">Iceberg began with one obsession: the perfect layered glass. Today we build every
-          falooda, sundae and cake the same way — real fruit, slow-set jellies, house-made
-          creams, and toppings finished by hand.</p>
-        <blockquote class="story__quote reveal">
-          “The important thing is to order an icecream after lunch — the rest will take care of itself.”
-          <cite>— House reminder, posted by the counter</cite>
-        </blockquote>
-        <div class="story__stats reveal">
-          <div><strong>30+</strong><span>Signature treats</span></div>
-          <div><strong>100%</strong><span>Made in-house</span></div>
-          <div><strong>7 days</strong><span>Open every week</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= COLLECTIONS (cinematic full-screen gallery) =================
-       Replaces the gallery grid: one full-screen scene per category that
-       snaps into view on scroll (CSS scroll-snap), with a parallax
-       backdrop and frameless glass product chips. -->
-  <div class="collections" id="gallery">
-
-    <section class="collection" data-menu="cake">
-      <div class="collection__bg"><img src="assets/rose-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 72%" aria-hidden="true" /></div>
-      <div class="collection__scrim" aria-hidden="true"></div>
-      <div class="collection__inner">
-        <header class="collection__head reveal">
-          <p class="section__eyebrow">The Collection</p>
-          <h2 class="collection__title">Cakes</h2>
-          <p class="collection__sub">Tiered, themed and baked to order — centrepieces for every celebration.</p>
-        </header>
-        <ul class="collection__items">
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/car-cake.jpeg" alt="Customized car-themed birthday cake" loading="lazy" style="object-position: 48% 84%" /></span>
-            <span class="collection__meta"><strong>Customized Cakes</strong><em>from ₹999</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/vanilla-cake.jpeg" alt="Vanilla celebration cake with cream swirls" loading="lazy" style="object-position: 50% 78%" /></span>
-            <span class="collection__meta"><strong>Wedding Cakes</strong><em>from ₹1,999</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/doll-cake.jpeg" alt="Princess doll cake with rosette frosting" loading="lazy" style="object-position: 50% 78%" /></span>
-            <span class="collection__meta"><strong>Theme Cakes</strong><em>from ₹999</em></span>
-          </li>
-        </ul>
-        <a class="collection__cta reveal" href="#menu" data-filter="cake">Browse all cakes →</a>
+        </aside>
       </div>
     </section>
 
-    <section class="collection" data-menu="icecream">
-      <div class="collection__bg"><img src="assets/scoops-happiness.jpeg" alt="" loading="lazy" style="object-position: 70% 55%" aria-hidden="true" /></div>
-      <div class="collection__scrim" aria-hidden="true"></div>
-      <div class="collection__inner">
-        <header class="collection__head reveal">
-          <p class="section__eyebrow">The Collection</p>
-          <h2 class="collection__title">Ice Creams</h2>
-          <p class="collection__sub">Slow-churned scoops, sundaes and cones — finished by hand at the counter.</p>
-        </header>
-        <ul class="collection__items">
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/dipped-cone.jpeg" alt="Choco-dipped waffle cone" loading="lazy" style="object-position: 96% 62%" /></span>
-            <span class="collection__meta"><strong>Choco-Dipped Cone</strong><em>₹89</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/cherry-sundae.jpeg" alt="Cherry scoop sundae" loading="lazy" style="object-position: 52% 62%" /></span>
-            <span class="collection__meta"><strong>Cherry Scoop Sundae</strong><em>₹149</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/pista-bowl.jpeg" alt="Nutty pista delight bowl" loading="lazy" style="object-position: 48% 62%" /></span>
-            <span class="collection__meta"><strong>Nutty Pista Delight</strong><em>₹139</em></span>
-          </li>
-        </ul>
-        <a class="collection__cta reveal" href="#menu" data-filter="icecream">Browse all ice creams →</a>
+    <!-- 02 · Milk Shake -->
+    <section class="panel" id="milk-shake" data-panel="image">
+      <div class="panel__media">
+        <img class="panel__img" src="assets/panel-shake.jpg" alt="Butterscotch thick shake and brownies at Iceberg" loading="lazy" decoding="async" style="object-position: 24% 50%" />
+        <div class="panel__veil"></div>
+      </div>
+      <div class="panel__content">
+        <div class="panel__head">
+          <p class="panel__eyebrow reveal">02 — Milk Shake</p>
+          <h2 class="panel__title reveal">Butterscotch<br/>Thick Shake</h2>
+          <p class="panel__desc reveal">Double-blended into a slow vortex of cream, crowned with butterscotch crunch.</p>
+        </div>
+        <aside class="glass-card" aria-label="Butterscotch Thick Shake — details">
+          <p class="glass-card__tag">Most Loved</p>
+          <h3 class="glass-card__name">Butterscotch Thick Shake</h3>
+          <ul class="glass-card__rows">
+            <li><i class="dot dot--gold"></i>Double-blended, extra thick</li>
+            <li><i class="dot dot--cream"></i>Whipped cream crown</li>
+            <li><i class="dot dot--berry"></i>Praline &amp; crunch topping</li>
+          </ul>
+          <div class="glass-card__foot">
+            <span class="glass-card__price">₹129</span>
+            <a class="glass-card__cta" target="_blank" rel="noopener"
+               href="https://wa.me/918340813972?text=Hi%20Iceberg!%20I%27d%20like%20to%20order%20the%20Butterscotch%20Thick%20Shake.">Order</a>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="collection" data-menu="pastry">
-      <div class="collection__bg"><img src="assets/choco-cake.jpeg" alt="" loading="lazy" style="object-position: 50% 75%" aria-hidden="true" /></div>
-      <div class="collection__scrim" aria-hidden="true"></div>
-      <div class="collection__inner">
-        <header class="collection__head reveal">
-          <p class="section__eyebrow">The Collection</p>
-          <h2 class="collection__title">Pastries</h2>
-          <p class="collection__sub">Slices, éclairs, tarts and tea cakes — the counter changes daily.</p>
-        </header>
-        <ul class="collection__items">
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/sweet-cake.jpeg" alt="Chocolate strawberry pastry slice" loading="lazy" style="object-position: 50% 80%" /></span>
-            <span class="collection__meta"><strong>Pastries &amp; Slices</strong><em>from ₹99</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/mango-tresleches.jpeg" alt="Mango tres leches bowl" loading="lazy" style="object-position: 50% 75%" /></span>
-            <span class="collection__meta"><strong>Mango Tres Leches</strong><em>₹199</em></span>
-          </li>
-          <li class="collection__item reveal">
-            <span class="collection__thumb"><img src="assets/mango-jar-cake.jpeg" alt="Mango jar cake" loading="lazy" style="object-position: 50% 80%" /></span>
-            <span class="collection__meta"><strong>Mango Jar Cake</strong><em>₹179</em></span>
-          </li>
-        </ul>
-        <a class="collection__cta reveal" href="#menu" data-filter="pastry">Browse all pastries →</a>
+    <!-- 03 · Sludge -->
+    <section class="panel" id="sludge" data-panel="video">
+      <div class="panel__media">
+        <video class="panel__video" muted loop playsinline preload="none"
+               data-src="assets/sludge-loop.mp4" poster="assets/sludge-poster.jpg"></video>
+        <div class="panel__veil"></div>
+      </div>
+      <div class="panel__content">
+        <div class="panel__head">
+          <p class="panel__eyebrow reveal">03 — Sludge</p>
+          <h2 class="panel__title reveal">Tropical<br/>Twilight Sludge</h2>
+          <p class="panel__desc reveal">Crushed-ice slush poured in two skies — golden pineapple under a violet swirl.</p>
+        </div>
+        <aside class="glass-card" aria-label="Tropical Twilight Sludge — details">
+          <p class="glass-card__tag">Ice Cold</p>
+          <h3 class="glass-card__name">Tropical Twilight Sludge</h3>
+          <ul class="glass-card__rows">
+            <li><i class="dot dot--violet"></i>Layered crushed-ice slush</li>
+            <li><i class="dot dot--gold"></i>Fresh pineapple press</li>
+            <li><i class="dot dot--berry"></i>Berry twilight swirl</li>
+          </ul>
+          <div class="glass-card__foot">
+            <span class="glass-card__price">from ₹79</span>
+            <a class="glass-card__cta" target="_blank" rel="noopener"
+               href="https://wa.me/918340813972?text=Hi%20Iceberg!%20I%27d%20like%20to%20order%20a%20Sludge.">Order</a>
+          </div>
+        </aside>
       </div>
     </section>
 
-  </div>
-
-  <!-- ================= VISIT / CTA ================= -->
-  <section class="visit section" id="visit">
-    <div class="visit__card reveal">
-      <p class="section__eyebrow">Visit Us</p>
-      <h2 class="section__title">Psssst… Icecream Time</h2>
-      <p class="visit__sub">Walk in for the full counter, or call us to book cakes for your next celebration.</p>
-      <div class="visit__actions">
-        <a class="btn btn--gold" href="tel:+918340813972">Call 83408 13972</a>
-        <a class="btn btn--ghost" href="https://www.instagram.com/iceberg_ndl" target="_blank" rel="noopener">Message on Instagram</a>
+    <!-- 04 · Pastries -->
+    <section class="panel" id="pastries" data-panel="image">
+      <div class="panel__media">
+        <img class="panel__img" src="assets/panel-pastry.jpg" alt="Chocolate strawberry cake slice at Iceberg" loading="lazy" decoding="async" />
+        <div class="panel__veil"></div>
       </div>
-      <p class="visit__hours">Nandyal, Andhra Pradesh · Open daily · 11:00 AM – 11:00 PM</p>
-    </div>
-  </section>
+      <div class="panel__content">
+        <div class="panel__head">
+          <p class="panel__eyebrow reveal">04 — Pastries</p>
+          <h2 class="panel__title reveal">Chocolate<br/>Berry Slice</h2>
+          <p class="panel__desc reveal">Fudgy chocolate layers stacked with fresh strawberries — comfort, one slice at a time.</p>
+        </div>
+        <aside class="glass-card" aria-label="Pastries — details">
+          <p class="glass-card__tag">Baked Daily</p>
+          <h3 class="glass-card__name">Pastries &amp; Slices</h3>
+          <ul class="glass-card__rows">
+            <li><i class="dot dot--choco"></i>Chocolate berry slices</li>
+            <li><i class="dot dot--cream"></i>Fresh cream classics</li>
+            <li><i class="dot dot--berry"></i>Donuts &amp; cupcakes</li>
+          </ul>
+          <div class="glass-card__foot">
+            <span class="glass-card__price">from ₹99</span>
+            <a class="glass-card__cta" target="_blank" rel="noopener"
+               href="https://wa.me/918340813972?text=Hi%20Iceberg!%20I%27d%20like%20to%20order%20pastries.">Order</a>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-  <!-- ================= FOOTER ================= -->
+    <!-- 05 · Cakes -->
+    <section class="panel" id="cakes" data-panel="image">
+      <div class="panel__media">
+        <img class="panel__img" src="assets/panel-cake.jpg" alt="Chocolate drip celebration cake at Iceberg" loading="lazy" decoding="async" />
+        <div class="panel__veil"></div>
+      </div>
+      <div class="panel__content">
+        <div class="panel__head">
+          <p class="panel__eyebrow reveal">05 — Cakes</p>
+          <h2 class="panel__title reveal">Celebration<br/>Cakes</h2>
+          <p class="panel__desc reveal">Caramel and chocolate layered like architecture — wedding, birthday, photo and doll cakes made to order.</p>
+        </div>
+        <aside class="glass-card" aria-label="Celebration cakes — details">
+          <p class="glass-card__tag">Made to Order</p>
+          <h3 class="glass-card__name">Custom Celebration Cakes</h3>
+          <ul class="glass-card__rows">
+            <li><i class="dot dot--choco"></i>Belgian chocolate ganache</li>
+            <li><i class="dot dot--gold"></i>Caramel layer builds</li>
+            <li><i class="dot dot--cream"></i>Photo, doll &amp; theme cakes</li>
+          </ul>
+          <div class="glass-card__foot">
+            <span class="glass-card__price">from ₹499</span>
+            <a class="glass-card__cta" target="_blank" rel="noopener"
+               href="https://wa.me/918340813972?text=Hi%20Iceberg!%20I%27d%20like%20to%20order%20a%20custom%20cake.">Order</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Section progress dots -->
+  <nav class="dots" id="dots" aria-label="Section navigation">
+    <a href="#top" data-scroll aria-label="Top"></a>
+    <a href="#ice-cream" data-scroll aria-label="Ice Cream"></a>
+    <a href="#milk-shake" data-scroll aria-label="Milk Shake"></a>
+    <a href="#sludge" data-scroll aria-label="Sludge"></a>
+    <a href="#pastries" data-scroll aria-label="Pastries"></a>
+    <a href="#cakes" data-scroll aria-label="Cakes"></a>
+  </nav>
+
+  <!-- ===== Footer ===== -->
   <footer class="footer">
     <div class="footer__inner">
-      <div class="footer__brand">
-        <span class="nav__brand-mark">❄</span>
-        <span>ICE<em>BERG</em></span>
-        <p>House of Icecreams &amp; Pastries</p>
+      <p class="footer__brand">Iceberg</p>
+      <p class="footer__tag">House of Icecreams &amp; Pastries · Nandyal, Andhra Pradesh</p>
+      <div class="footer__links">
+        <a href="https://www.instagram.com/iceberg_ndl" target="_blank" rel="noopener">Instagram — @iceberg_ndl</a>
+        <a href="https://wa.me/918340813972" target="_blank" rel="noopener">WhatsApp — +91 83408 13972</a>
       </div>
-      <nav class="footer__links">
-        <a href="#menu">Menu</a>
-        <a href="#experience">3D View</a>
-        <a href="#story">Our Story</a>
-        <a href="#gallery">Gallery</a>
-        <a href="tel:+918340813972">Call 83408 13972</a>
-        <a href="https://www.instagram.com/iceberg_ndl" target="_blank" rel="noopener">Instagram</a>
-      </nav>
-      <p class="footer__note">© <span id="year"></span> Iceberg · Nandyal, Andhra Pradesh. Wedding Cakes · Birthday Cakes · Anniversary Cakes · Cupcakes · Donuts · Pastries &amp; many more.</p>
+      <p class="footer__note">© <span id="year"></span> Iceberg · Wedding cakes, birthday cakes, cupcakes, donuts, pastries &amp; many more.</p>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Floating WhatsApp -->
+  <a class="wa-float" href="https://wa.me/918340813972?text=Hi%20Iceberg!" target="_blank" rel="noopener" aria-label="Chat with Iceberg on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path d="M16.04 4.5c-6.35 0-11.5 5.11-11.5 11.42 0 2.01.53 3.98 1.55 5.71L4.5 27.5l6.04-1.56a11.6 11.6 0 0 0 5.5 1.39c6.35 0 11.5-5.11 11.5-11.41 0-3.05-1.2-5.92-3.37-8.08a11.42 11.42 0 0 0-8.13-3.34Zm0 2.16c2.5 0 4.85.96 6.61 2.72a9.2 9.2 0 0 1 2.74 6.54c0 5.11-4.2 9.26-9.35 9.26-1.67 0-3.3-.44-4.72-1.28l-.34-.2-3.58.93.96-3.46-.22-.36a9.16 9.16 0 0 1-1.44-4.9c0-5.1 4.2-9.25 9.34-9.25Zm-4.1 4.83c-.19 0-.5.07-.76.35-.26.28-1 .97-1 2.36 0 1.4 1.02 2.75 1.17 2.94.14.19 1.98 3.14 4.86 4.28 2.4.94 2.89.75 3.41.7.52-.05 1.68-.68 1.92-1.34.24-.66.24-1.22.17-1.34-.07-.12-.26-.19-.55-.33-.28-.14-1.68-.82-1.94-.92-.26-.09-.45-.14-.64.15-.19.28-.74.92-.9 1.1-.17.19-.34.21-.62.07a7.84 7.84 0 0 1-2.29-1.4 8.5 8.5 0 0 1-1.58-1.95c-.17-.28-.02-.44.12-.58.13-.13.29-.33.43-.5.14-.16.19-.28.28-.47.1-.19.05-.35-.02-.5-.07-.14-.63-1.53-.87-2.09-.23-.55-.46-.51-.64-.52l-.55-.01Z"/>
+    </svg>
+    <span class="wa-float__ring"></span>
+  </a>
+
+  <!-- Mobile menu overlay -->
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <nav class="sheet__links" aria-label="Categories">
+      <a href="#ice-cream" data-scroll>Ice Cream</a>
+      <a href="#milk-shake" data-scroll>Milk Shake</a>
+      <a href="#sludge" data-scroll>Sludge</a>
+      <a href="#pastries" data-scroll>Pastries</a>
+      <a href="#cakes" data-scroll>Cakes</a>
+    </nav>
+    <div class="sheet__social">
+      <a href="https://www.instagram.com/iceberg_ndl" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/918340813972" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+
 </body>
 </html>
