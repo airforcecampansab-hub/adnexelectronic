@@ -1,0 +1,6 @@
+# Generated, self-contained preview bundle (published as an Artifact, not source).
+# Regenerate from index.html/styles.css/script.js when a fresh snapshot is needed.
+iceberg-preview.html
+
+# OS / editor cruft
+.DS_Store
