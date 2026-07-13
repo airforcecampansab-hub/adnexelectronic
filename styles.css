@@ -187,13 +187,111 @@ img, video { display: block; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(11, 10, 8, 0.82) 0%, rgba(11, 10, 8, 0.25) 38%, rgba(11, 10, 8, 0.12) 60%, rgba(11, 10, 8, 0.45) 100%);
+    linear-gradient(to top, rgba(11, 10, 8, 0.76) 0%, rgba(11, 10, 8, 0.18) 40%, rgba(11, 10, 8, 0.07) 65%, rgba(11, 10, 8, 0.36) 100%);
   pointer-events: none;
+}
+
+/* ============================================================
+   Panel tint — per-section vivid color cast over video/image
+   ============================================================ */
+.panel__tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+[data-hue="berry"]  .panel__tint { background: rgba(160, 28, 60, 0.40); }
+[data-hue="pista"]  .panel__tint { background: rgba(22, 76, 38, 0.38); }
+[data-hue="shake"]  .panel__tint { background: rgba(130, 80, 10, 0.36); }
+[data-hue="sludge"] .panel__tint { background: rgba(58, 25, 130, 0.38); }
+[data-hue="pastry"] .panel__tint { background: rgba(100, 25, 52, 0.36); }
+[data-hue="cake"]   .panel__tint { background: rgba(40, 12, 4, 0.44); }
+
+/* ============================================================
+   Floating orbs — depth parallax elements per panel
+   ============================================================ */
+.panel__orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orb {
+  display: block;
+  position: absolute;
+  left: var(--lx, 50%);
+  top: var(--ly, 50%);
+  width: var(--sz, 80px);
+  height: var(--sz, 80px);
+  margin-left: calc(var(--sz, 80px) * -0.5);
+  margin-top: calc(var(--sz, 80px) * -0.5);
+  border-radius: 50%;
+  will-change: transform;
+  opacity: 0;
+}
+
+[data-hue="berry"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(255,170,185,0.68) 0%, rgba(210,65,95,0.22) 42%, transparent 72%);
+  border: 1px solid rgba(255,140,160,0.30);
+  box-shadow: 0 0 32px rgba(195,45,80,0.22), inset 0 0 22px rgba(255,200,210,0.08);
+}
+[data-hue="pista"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(185,240,155,0.65) 0%, rgba(55,155,75,0.22) 42%, transparent 72%);
+  border: 1px solid rgba(135,215,105,0.28);
+  box-shadow: 0 0 32px rgba(45,135,55,0.20), inset 0 0 22px rgba(180,255,140,0.07);
+}
+[data-hue="shake"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(255,218,135,0.65) 0%, rgba(195,125,28,0.22) 42%, transparent 72%);
+  border: 1px solid rgba(215,165,55,0.28);
+  box-shadow: 0 0 32px rgba(170,105,18,0.20), inset 0 0 22px rgba(255,220,100,0.07);
+}
+[data-hue="sludge"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(195,165,255,0.65) 0%, rgba(95,50,195,0.22) 42%, transparent 72%);
+  border: 1px solid rgba(165,125,255,0.28);
+  box-shadow: 0 0 32px rgba(85,40,175,0.20), inset 0 0 22px rgba(200,170,255,0.07);
+}
+[data-hue="pastry"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(255,165,195,0.62) 0%, rgba(165,45,85,0.22) 42%, transparent 72%);
+  border: 1px solid rgba(218,105,145,0.28);
+  box-shadow: 0 0 32px rgba(145,38,72,0.20), inset 0 0 22px rgba(255,160,190,0.07);
+}
+[data-hue="cake"] .orb {
+  background: radial-gradient(circle at 28% 24%, rgba(205,150,85,0.62) 0%, rgba(115,55,18,0.25) 42%, transparent 72%);
+  border: 1px solid rgba(175,105,45,0.28);
+  box-shadow: 0 0 32px rgba(95,42,8,0.20), inset 0 0 22px rgba(210,155,85,0.07);
+}
+
+/* ============================================================
+   Background watermark text — giant, faint, behind content
+   ============================================================ */
+.panel__bgtext {
+  position: absolute;
+  z-index: 3;
+  bottom: 24%;
+  left: 0;
+  padding: 0 calc(var(--pad) * 0.75);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(9rem, 24vw, 22rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.88;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.055);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+.panel--hero .panel__bgtext {
+  bottom: auto;
+  top: 50%;
+  transform: translateY(-36%);
+  font-size: clamp(10rem, 28vw, 26rem);
 }
 
 .panel__content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   width: 100%;
   display: flex;
   align-items: flex-end;
@@ -214,8 +312,8 @@ img, video { display: block; }
 .panel__title {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(2.6rem, 6.5vw, 5.2rem);
-  line-height: 1.02;
+  font-size: clamp(3.6rem, 9vw, 8rem);
+  line-height: 1.0;
   letter-spacing: 0.01em;
   text-wrap: balance;
   text-shadow:
@@ -391,7 +489,7 @@ img, video { display: block; }
 
 .hero__content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   text-align: center;
   padding: 0 var(--pad);
   max-width: 880px;
@@ -692,4 +790,5 @@ img, video { display: block; }
     -webkit-text-fill-color: var(--ink);
     color: var(--ink);
   }
+  .orb { opacity: 0.55; }
 }

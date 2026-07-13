@@ -68,18 +68,24 @@ const navLinks = Array.from(document.querySelectorAll("#navLinks a"));
 
 let currentPanel = panels[0];
 
+function getPanelTargets(panel) {
+  return [
+    panel.querySelector(".panel__video, .panel__img"),
+    panel.querySelector(".panel__head, .hero__content"),
+    panel.querySelector(".glass-card"),
+    panel.querySelector(".panel__bgtext"),
+    ...Array.from(panel.querySelectorAll(".orb")),
+  ].filter(Boolean);
+}
+
 function markActive(index) {
   if (currentPanel && hasGSAP) {
-    const leaving = [
-      currentPanel.querySelector(".panel__video, .panel__img"),
-      currentPanel.querySelector(".panel__head, .hero__content"),
-      currentPanel.querySelector(".glass-card"),
-    ].filter(Boolean);
-    gsap.to(leaving, { x: 0, y: 0, rotateY: 0, rotateX: 0, duration: 0.55, ease: "power2.out", overwrite: "auto" });
+    gsap.to(getPanelTargets(currentPanel), {
+      x: 0, y: 0, rotateY: 0, rotateX: 0,
+      duration: 0.55, ease: "power2.out", overwrite: "auto",
+    });
   }
-
   currentPanel = panels[index];
-
   dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
   const id = panels[index] ? panels[index].id : "";
   navLinks.forEach((link) =>
@@ -123,6 +129,8 @@ if (hasGSAP && !prefersReducedMotion) {
     const media = panel.querySelector(".panel__video, .panel__img");
     const reveals = panel.querySelectorAll(".reveal");
     const card = panel.querySelector(".glass-card");
+    const orbs = panel.querySelectorAll(".orb");
+    const bgtext = panel.querySelector(".panel__bgtext");
 
     /* cinematic Ken Burns / parallax scrub on media */
     gsap.fromTo(
@@ -141,7 +149,25 @@ if (hasGSAP && !prefersReducedMotion) {
       }
     );
 
-    /* 3D entrance: text folds up from below + depth perspective */
+    /* bgtext slow horizontal drift as panel scrolls through */
+    if (bgtext) {
+      gsap.fromTo(
+        bgtext,
+        { xPercent: -3 },
+        {
+          xPercent: 3,
+          ease: "none",
+          scrollTrigger: {
+            trigger: panel,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    /* 3D entrance for text + card */
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: panel,
@@ -165,6 +191,28 @@ if (hasGSAP && !prefersReducedMotion) {
         "+=0.42"
       );
     }
+
+    /* orbs float in from random directions */
+    if (orbs.length) {
+      gsap.fromTo(
+        orbs,
+        (i) => ({ autoAlpha: 0, scale: 0.35, x: (i % 2 === 0 ? -1 : 1) * 40, y: 30 }),
+        {
+          autoAlpha: 0.88,
+          scale: 1,
+          x: 0,
+          y: 0,
+          duration: 1.6,
+          stagger: { amount: 0.5, from: "random" },
+          ease: "back.out(1.2)",
+          scrollTrigger: {
+            trigger: panel,
+            start: "top 60%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
   });
 
   ScrollTrigger.create({
@@ -174,9 +222,7 @@ if (hasGSAP && !prefersReducedMotion) {
   });
   markActive(0);
 
-  /* ---------- 3D glass-card hover tilt ----------
-     Each card tilts toward the cursor like a physical object.
-     rotateX/rotateY are computed from cursor position within the card. */
+  /* ---------- 3D glass-card hover tilt ---------- */
   panels.forEach((panel) => {
     const card = panel.querySelector(".glass-card");
     if (!card) return;
@@ -206,39 +252,46 @@ if (hasGSAP && !prefersReducedMotion) {
     });
   });
 
-  /* ---------- Global mouse-cursor parallax: layered depth ----------
-     Background drifts opposite the cursor (farthest).
-     Text follows slightly toward cursor (mid).
-     Glass card floats most toward cursor + adds subtle rotateY (nearest). */
+  /* ---------- Mouse-cursor parallax: layered depth across all elements ----------
+     Background media:  drifts opposite the cursor (farthest layer)
+     Bgtext watermark:  slow drift, same direction as media but less
+     Text head:         follows toward cursor (mid layer)
+     Glass card:        floats most toward cursor (nearest layer)
+     Orbs:              each uses its own data-d depth multiplier             */
   window.addEventListener("mousemove", (e) => {
     if (!currentPanel) return;
 
-    const nx = (e.clientX / window.innerWidth)  * 2 - 1;  // -1 → +1
-    const ny = (e.clientY / window.innerHeight) * 2 - 1;  // -1 → +1
+    const nx = (e.clientX / window.innerWidth)  * 2 - 1;
+    const ny = (e.clientY / window.innerHeight) * 2 - 1;
 
-    const media = currentPanel.querySelector(".panel__video, .panel__img");
-    const head  = currentPanel.querySelector(".panel__head, .hero__content");
-    const card  = currentPanel.querySelector(".glass-card");
+    const media  = currentPanel.querySelector(".panel__video, .panel__img");
+    const head   = currentPanel.querySelector(".panel__head, .hero__content");
+    const card   = currentPanel.querySelector(".glass-card");
+    const bgtext = currentPanel.querySelector(".panel__bgtext");
+    const orbs   = currentPanel.querySelectorAll(".orb");
 
-    if (media) {
-      gsap.to(media, { x: nx * -16, y: ny * -10, duration: 1.8, ease: "power2.out", overwrite: "auto" });
-    }
-    if (head) {
-      gsap.to(head, { x: nx * 8, y: ny * 5, duration: 2.1, ease: "power2.out", overwrite: "auto" });
-    }
-    if (card) {
-      gsap.to(card, { x: nx * 13, y: ny * 8, duration: 1.5, ease: "power2.out", overwrite: "auto" });
-    }
+    if (media)  gsap.to(media,  { x: nx * -16, y: ny * -10, duration: 1.8, ease: "power2.out", overwrite: "auto" });
+    if (bgtext) gsap.to(bgtext, { x: nx * -10, y: ny * -6,  duration: 2.4, ease: "power2.out", overwrite: "auto" });
+    if (head)   gsap.to(head,   { x: nx *  8,  y: ny *  5,  duration: 2.1, ease: "power2.out", overwrite: "auto" });
+    if (card)   gsap.to(card,   { x: nx * 13,  y: ny *  8,  duration: 1.5, ease: "power2.out", overwrite: "auto" });
+
+    orbs.forEach((orb) => {
+      const d = parseFloat(orb.dataset.d || "0.8");
+      gsap.to(orb, {
+        x: nx * d * 44,
+        y: ny * d * 28,
+        duration: 1.0 + d * 0.7,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    });
   }, { passive: true });
 
   document.addEventListener("mouseleave", () => {
     if (!currentPanel) return;
-    const targets = [
-      currentPanel.querySelector(".panel__video, .panel__img"),
-      currentPanel.querySelector(".panel__head, .hero__content"),
-      currentPanel.querySelector(".glass-card"),
-    ].filter(Boolean);
-    gsap.to(targets, { x: 0, y: 0, duration: 1.2, ease: "power3.out", overwrite: "auto" });
+    gsap.to(getPanelTargets(currentPanel), {
+      x: 0, y: 0, duration: 1.2, ease: "power3.out", overwrite: "auto",
+    });
   });
 
 } else {
