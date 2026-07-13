@@ -132,13 +132,14 @@ if (hasGSAP && !prefersReducedMotion) {
     const orbs = panel.querySelectorAll(".orb");
     const bgtext = panel.querySelector(".panel__bgtext");
 
-    /* cinematic Ken Burns / parallax scrub on media */
+    /* cinematic Ken Burns / parallax scrub on media — deeper zoom + slight 3D tilt */
     gsap.fromTo(
       media,
-      { scale: 1.18, yPercent: -4 },
+      { scale: 1.3, yPercent: -5, rotateX: 3.5 },
       {
-        scale: 1,
-        yPercent: 4,
+        scale: 1.02,
+        yPercent: 5,
+        rotateX: -3.5,
         ease: "none",
         scrollTrigger: {
           trigger: panel,
@@ -148,6 +149,32 @@ if (hasGSAP && !prefersReducedMotion) {
         },
       }
     );
+
+    /* scroll-scrubbed 3D fly-through: content tilts back as it enters,
+       flattens at screen center, then tips forward and recedes as it
+       leaves — every scroll gesture reads as camera movement in depth.
+       Targets the content wrapper, which the mouse-parallax tweens never
+       animate, so the two systems can't fight over transforms.          */
+    const content = panel.querySelector(".panel__content, .hero__content");
+    if (content) {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: panel,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.6,
+        },
+      })
+        .fromTo(
+          content,
+          { rotateX: 16, scale: 0.9, yPercent: 9, opacity: 0.25 },
+          { rotateX: 0, scale: 1, yPercent: 0, opacity: 1, ease: "power1.out" }
+        )
+        .to(
+          content,
+          { rotateX: -12, scale: 0.94, yPercent: -9, opacity: 0.25, ease: "power1.in" }
+        );
+    }
 
     /* bgtext slow horizontal drift as panel scrolls through */
     if (bgtext) {
@@ -251,6 +278,33 @@ if (hasGSAP && !prefersReducedMotion) {
       });
     });
   });
+
+  /* ---------- scroll-velocity reaction ----------
+     Fast scrolling shears the giant watermark words; they spring
+     back with an ease-out once the scroll settles, adding physical
+     inertia to every flick of the wheel.                            */
+  const bgtexts = gsap.utils.toArray(".panel__bgtext");
+  if (bgtexts.length) {
+    const proxy = { skew: 0 };
+    const skewSetter = gsap.quickSetter(bgtexts, "skewY", "deg");
+    const clampSkew = gsap.utils.clamp(-9, 9);
+
+    ScrollTrigger.create({
+      onUpdate(self) {
+        const skew = clampSkew(self.getVelocity() / -320);
+        if (Math.abs(skew) > Math.abs(proxy.skew)) {
+          proxy.skew = skew;
+          gsap.to(proxy, {
+            skew: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            overwrite: true,
+            onUpdate: () => skewSetter(proxy.skew),
+          });
+        }
+      },
+    });
+  }
 
   /* ---------- Mouse-cursor parallax: layered depth across all elements ----------
      Background media:  drifts opposite the cursor (farthest layer)

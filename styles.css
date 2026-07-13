@@ -299,6 +299,8 @@ img, video { display: block; }
   gap: clamp(24px, 4vw, 72px);
   padding: 0 var(--pad) clamp(28px, 6vh, 72px);
   perspective: 1000px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 .panel__eyebrow {
@@ -493,6 +495,8 @@ img, video { display: block; }
   text-align: center;
   padding: 0 var(--pad);
   max-width: 880px;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 /* Floating ambient orb behind the hero title */
