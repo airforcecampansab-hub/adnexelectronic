@@ -10,7 +10,7 @@ if (!hasGSAP) document.documentElement.classList.add("no-gsap");
 /* ---------- footer year ---------- */
 document.getElementById("year").textContent = new Date().getFullYear();
 
-/* ---------- sticky nav: glass background after leaving the hero top ---------- */
+/* ---------- sticky nav ---------- */
 const nav = document.getElementById("nav");
 const onScrollNav = () => nav.classList.toggle("is-solid", window.scrollY > 40);
 onScrollNav();
@@ -69,14 +69,13 @@ const navLinks = Array.from(document.querySelectorAll("#navLinks a"));
 let currentPanel = panels[0];
 
 function markActive(index) {
-  // Smoothly reset cursor-parallax offsets on the panel we're leaving
   if (currentPanel && hasGSAP) {
     const leaving = [
       currentPanel.querySelector(".panel__video, .panel__img"),
       currentPanel.querySelector(".panel__head, .hero__content"),
       currentPanel.querySelector(".glass-card"),
     ].filter(Boolean);
-    gsap.to(leaving, { x: 0, y: 0, duration: 0.55, ease: "power2.out", overwrite: "auto" });
+    gsap.to(leaving, { x: 0, y: 0, rotateY: 0, rotateX: 0, duration: 0.55, ease: "power2.out", overwrite: "auto" });
   }
 
   currentPanel = panels[index];
@@ -91,7 +90,7 @@ function markActive(index) {
 if (hasGSAP && !prefersReducedMotion) {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  /* smooth anchor scrolling for nav, dots, cue */
+  /* smooth anchor scrolling */
   document.querySelectorAll("[data-scroll]").forEach((link) => {
     link.addEventListener("click", (event) => {
       const target = document.querySelector(link.getAttribute("href"));
@@ -106,7 +105,7 @@ if (hasGSAP && !prefersReducedMotion) {
     });
   });
 
-  /* full-screen snap across hero + category panels */
+  /* full-screen snap */
   ScrollTrigger.create({
     trigger: "#snapZone",
     start: "top top",
@@ -125,7 +124,7 @@ if (hasGSAP && !prefersReducedMotion) {
     const reveals = panel.querySelectorAll(".reveal");
     const card = panel.querySelector(".glass-card");
 
-    /* slow cinematic drift on the media while the panel crosses the viewport */
+    /* cinematic Ken Burns / parallax scrub on media */
     gsap.fromTo(
       media,
       { scale: 1.18, yPercent: -4 },
@@ -142,7 +141,7 @@ if (hasGSAP && !prefersReducedMotion) {
       }
     );
 
-    /* text rises first; the glass card arrives after the scene has played */
+    /* 3D entrance: text folds up from below + depth perspective */
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: panel,
@@ -154,21 +153,20 @@ if (hasGSAP && !prefersReducedMotion) {
 
     timeline.fromTo(
       reveals,
-      { autoAlpha: 0, y: 46 },
-      { autoAlpha: 1, y: 0, duration: 1.05, stagger: 0.14, ease: "power3.out" }
+      { autoAlpha: 0, y: 52, rotateX: 20, transformPerspective: 700 },
+      { autoAlpha: 1, y: 0, rotateX: 0, duration: 1.1, stagger: 0.15, ease: "power3.out" }
     );
 
     if (card) {
       timeline.fromTo(
         card,
-        { autoAlpha: 0, y: 60, scale: 0.96, filter: "blur(10px)" },
-        { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.1, ease: "power3.out" },
-        "+=0.55"
+        { autoAlpha: 0, y: 80, rotateX: 18, scale: 0.93, filter: "blur(12px)", transformPerspective: 1000 },
+        { autoAlpha: 1, y: 0, rotateX: 0, scale: 1, filter: "blur(0px)", duration: 1.25, ease: "power3.out" },
+        "+=0.42"
       );
     }
   });
 
-  /* keep active states honest when scrolling back above triggers */
   ScrollTrigger.create({
     trigger: panels[0],
     start: "top top",
@@ -176,11 +174,42 @@ if (hasGSAP && !prefersReducedMotion) {
   });
   markActive(0);
 
-  /* ---------- Mouse-cursor parallax: layered depth on active panel ----------
-     Background (farthest layer) drifts opposite to cursor.
-     Text (mid layer) drifts slightly toward cursor.
-     Glass card (nearest layer) floats the most toward cursor.
-     Uses pixel x/y so it doesn't conflict with the scroll scrub (yPercent/scale). */
+  /* ---------- 3D glass-card hover tilt ----------
+     Each card tilts toward the cursor like a physical object.
+     rotateX/rotateY are computed from cursor position within the card. */
+  panels.forEach((panel) => {
+    const card = panel.querySelector(".glass-card");
+    if (!card) return;
+
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const dx = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
+      const dy = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
+      gsap.to(card, {
+        rotateY: dx * 16,
+        rotateX: dy * -11,
+        transformPerspective: 900,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    });
+
+    card.addEventListener("mouseleave", () => {
+      gsap.to(card, {
+        rotateY: 0,
+        rotateX: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+    });
+  });
+
+  /* ---------- Global mouse-cursor parallax: layered depth ----------
+     Background drifts opposite the cursor (farthest).
+     Text follows slightly toward cursor (mid).
+     Glass card floats most toward cursor + adds subtle rotateY (nearest). */
   window.addEventListener("mousemove", (e) => {
     if (!currentPanel) return;
 
@@ -195,14 +224,13 @@ if (hasGSAP && !prefersReducedMotion) {
       gsap.to(media, { x: nx * -16, y: ny * -10, duration: 1.8, ease: "power2.out", overwrite: "auto" });
     }
     if (head) {
-      gsap.to(head,  { x: nx *  8,  y: ny *  5,  duration: 2.1, ease: "power2.out", overwrite: "auto" });
+      gsap.to(head, { x: nx * 8, y: ny * 5, duration: 2.1, ease: "power2.out", overwrite: "auto" });
     }
     if (card) {
-      gsap.to(card,  { x: nx * 13,  y: ny *  8,  duration: 1.5, ease: "power2.out", overwrite: "auto" });
+      gsap.to(card, { x: nx * 13, y: ny * 8, duration: 1.5, ease: "power2.out", overwrite: "auto" });
     }
   }, { passive: true });
 
-  /* Reset parallax when the cursor leaves the page */
   document.addEventListener("mouseleave", () => {
     if (!currentPanel) return;
     const targets = [
@@ -214,7 +242,7 @@ if (hasGSAP && !prefersReducedMotion) {
   });
 
 } else {
-  /* graceful fallback: everything visible, plain anchors, native smooth scroll */
+  /* graceful fallback */
   document.querySelectorAll(".reveal, .glass-card").forEach((el) => {
     el.style.opacity = 1;
   });
