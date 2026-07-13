@@ -310,3 +310,35 @@ if (hasGSAP && !prefersReducedMotion) {
   }, { threshold: 0.55 });
   panels.forEach((panel) => activeObserver.observe(panel));
 }
+
+/* ---------- Infinite review ticker ----------
+   Runs independently from the snap-scroll stack.
+   GSAP moves the track from xPercent 0 → -50 on repeat:-1.
+   Because the innerHTML is doubled, at -50% the visible cards
+   are identical to 0%, giving a seamless infinite loop.          */
+(function () {
+  const track   = document.getElementById("tickerTrack");
+  const wrap    = document.getElementById("tickerWrap");
+  const section = document.querySelector(".ticker-section");
+  if (!track || !wrap || !section || !hasGSAP || prefersReducedMotion) return;
+
+  /* Double the card set for the seamless loop */
+  track.innerHTML += track.innerHTML;
+
+  /* Main ticker tween — ease:none keeps velocity perfectly constant */
+  const tween = gsap.to(track, {
+    xPercent: -50,
+    ease: "none",
+    duration: 42,
+    repeat: -1,
+  });
+
+  /* Hover: pause smoothly, resume from exact position */
+  wrap.addEventListener("mouseenter", () => tween.pause(),  { passive: true });
+  wrap.addEventListener("mouseleave", () => tween.resume(), { passive: true });
+
+  /* Visibility: don't burn GPU when off screen */
+  new IntersectionObserver(([entry]) => {
+    entry.isIntersecting ? tween.resume() : tween.pause();
+  }, { threshold: 0.05 }).observe(section);
+})();
